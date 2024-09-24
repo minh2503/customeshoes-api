@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="App.BLL\**" />
+    <Compile Remove="App.DAL\**" />
+    <Compile Remove="App.Entity\**" />
+    <Compile Remove="App.Utility\**" />
+    <Compile Remove="Database\**" />
+    <Content Remove="App.BLL\**" />
+    <Content Remove="App.DAL\**" />
+    <Content Remove="App.Entity\**" />
+    <Content Remove="App.Utility\**" />
+    <Content Remove="Database\**" />
+    <EmbeddedResource Remove="App.BLL\**" />
+    <EmbeddedResource Remove="App.DAL\**" />
+    <EmbeddedResource Remove="App.Entity\**" />
+    <EmbeddedResource Remove="App.Utility\**" />
+    <EmbeddedResource Remove="Database\**" />
+    <None Remove="App.BLL\**" />
+    <None Remove="App.DAL\**" />
+    <None Remove="App.Entity\**" />
+    <None Remove="App.Utility\**" />
+    <None Remove="Database\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.26" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.26" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.26" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.26" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.26">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+	  <PackageReference Include="Serilog" Version="3.1.1" />
+	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.0" />
+	  <PackageReference Include="Serilog.Sinks.Email" Version="2.4.0" />
+	  <PackageReference Include="Serilog.Sinks.Http" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\tfu-net-core\TFU.APIBased\TFU.APIBased.csproj" />
+    <ProjectReference Include="..\tfu-net-core\TFU.BLL\TFU.BLL.csproj" />
+    <ProjectReference Include="..\tfu-net-core\TFU.DAL\TFU.DAL.csproj" />
+    <ProjectReference Include="..\tfu-net-core\TFU.Utility\TFU.Utility.csproj" />
+    <ProjectReference Include="..\tfu-net-core\TFU.WebBased\TFU.MVCWebBased.csproj" />
+    <ProjectReference Include="App.BLL\App.BLL.csproj" />
+    <ProjectReference Include="App.DAL\App.DAL.csproj" />
+    <ProjectReference Include="App.Entity\App.Entity.csproj" />
+    <ProjectReference Include="App.Utility\App.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\NewFolder\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+</Project>
