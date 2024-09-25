@@ -51,7 +51,7 @@ namespace tapluyen.api.Controllers
 
             catch (Exception ex)
             {
-                _logger.LogError("CreateUpdateUserDetails: {0} {1}", ex.Message, ex.StackTrace);
+                _logger.LogError("GetUserDetail: {0} {1}", ex.Message, ex.StackTrace);
                 return SaveError(ex.Message);
             }
         }
@@ -66,7 +66,7 @@ namespace tapluyen.api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("CreateUpdateUserDetails: {0} {1}", ex.Message, ex.StackTrace);
+                _logger.LogError("GetAllUserDetail: {0} {1}", ex.Message, ex.StackTrace);
                 return SaveError(ex.Message);
             }
         }
