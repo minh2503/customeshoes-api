@@ -29,13 +29,17 @@ namespace App.DAL
         public DbSet<SHIPWardDTO> ShipWard { get; set; }
         #endregion
 
-        public DbSet<App_MuscleDTO> App_Muscles { get; set; }
+        public DbSet<App_UserDetailDTO> App_UserDetails { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<App_UserDetailDTO>(b =>
+            {
+                b.ToTable("App_UserDetails");
+                b.HasKey(x => x.Id);
+            });
             modelBuilder.Entity<SHIPDistrictDTO>(b =>
             {
                 b.ToTable("SHIP_District");

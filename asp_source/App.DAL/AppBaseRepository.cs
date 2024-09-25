@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using App.Entity;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using TFU.Common;
 using TFU.DAL;
 using TFU.EntityFramework;
 
@@ -80,9 +82,12 @@ namespace App.DAL
         /// <summary>
         /// Save all changes in the context
         /// </summary>
-        protected async Task<bool> SaveAsync()
+        protected async Task<BaseRepsonse> SaveAsync()
         {
-            return await _dbAppContext.SaveChangesAsync() > 0;
+            var update = await _dbAppContext.SaveChangesAsync() > 0;
+            if (!update) return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
+            return new BaseRepsonse { IsSuccess = true, Message = Constants.SaveDataSuccess };
         }
+
     }
 }

@@ -36,6 +36,7 @@
         public const int PAYMENT_MOMO = 2;
         public const string PhoneNumberVietNam = "+84";
         public const string SomeThingWentWrong = "Có lỗi xảy ra trong quá trình thực hiện, vui lòng thử lại sau ít phút!";
+        public const string UserNotSame = "Người dùng không giống nhau.";
         #endregion
 
         #region Password

@@ -22,11 +22,14 @@ namespace App.EcommerceAPI.DependencyConfig
             services.AddTransient<ITFUBizLogic, TFUBizLogic>();
             services.AddTransient<IMenuBizLogic, MenuBizLogic>();
             services.AddTransient<IRoleClaimRepository, RoleClaimRepository>();
+            services.AddTransient<IUserDetailsBizLogic, UserDetailsBizLogic>();
 
             //DAL
             services.AddTransient<IIdentityRepository, IdentityRepository>();
             services.AddTransient<ITFURepository, TFURepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
+            services.AddTransient<IRoleClaimRepository, RoleClaimRepository>();
+            services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
 
         }
     }
