@@ -1,4 +1,5 @@
 ﻿using App.BLL.Interfaces;
+using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Implements
 {
@@ -30,6 +32,13 @@ namespace App.BLL.Implements
 			var response = await _brandRepository.GetBrand(id);
 			if (response == null) return null;
 			return new BrandModel(response);
+		}
+
+		public async Task<List<BrandModel>> GetListBrands(PagingModel paging)
+		{
+			var data = await _brandRepository.GetAllBrands(paging);
+			if(!data.Any()) return data.Select(b => new BrandModel()).ToList();
+			return data.Select(x => new BrandModel(x)).ToList();
 		}
 	}
 }

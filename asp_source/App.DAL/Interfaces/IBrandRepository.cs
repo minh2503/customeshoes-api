@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.DAL.Interfaces
 {
@@ -12,5 +13,6 @@ namespace App.DAL.Interfaces
     {
 		Task<BaseRepsonse> CreateUpdateBrand(App_BrandDTO brandDTO);
 		Task<App_BrandDTO> GetBrand(long id);
+		Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging);
 	}
 }

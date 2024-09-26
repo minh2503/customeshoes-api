@@ -4,6 +4,7 @@ using App.Entity.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFU.APIBased;
+using TFU.Common.Models;
 
 namespace tapluyen.api.Controllers
 {
@@ -50,7 +51,23 @@ namespace tapluyen.api.Controllers
 
 			catch (Exception ex)
 			{
-				_logger.LogError("GetUserDetail: {0} {1}", ex.Message, ex.StackTrace);
+				_logger.LogError("GetBrand: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost("get-all-brands-by-paging")]
+		public async Task<IActionResult> GetAllBrands([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _brandsBizLogic.GetListBrands(paging);
+				var result = new PagingDataModel<BrandModel>(data, paging);
+				return SaveSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllBrands: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}

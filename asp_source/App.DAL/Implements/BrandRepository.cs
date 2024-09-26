@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Extension;
+using TFU.Common.Models;
 using TFU.EntityFramework;
 
 namespace App.DAL.Implements
@@ -51,6 +53,11 @@ namespace App.DAL.Implements
 				_dbAppContext.App_Brands.Add(brand);
 			}
 			return await SaveAsync();
+		}
+
+		public async Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging)
+		{
+			return await _dbAppContext.App_Brands.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
 
 		public async Task<App_BrandDTO> GetBrand(long id)
