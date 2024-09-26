@@ -24,5 +24,12 @@ namespace App.BLL.Implements
 			var response = await _brandRepository.CreateUpdateBrand(dto);
 			return response;
 		}
+
+		public async Task<BrandModel> GetBrand(long id)
+		{
+			var response = await _brandRepository.GetBrand(id);
+			if (response == null) return null;
+			return new BrandModel(response);
+		}
 	}
 }

@@ -36,5 +36,23 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpGet]
+		[Route("get-brand/{id}")]
+		public async Task<IActionResult> GetUserDetail([FromRoute]long id)
+		{
+			try
+			{
+				var response = await _brandsBizLogic.GetBrand(id);
+				if(response == null) return GetError();
+				return SaveSuccess(response);
+			}
+
+			catch (Exception ex)
+			{
+				_logger.LogError("GetUserDetail: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }

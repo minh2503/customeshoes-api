@@ -11,5 +11,6 @@ namespace App.BLL.Interfaces
     public interface IBrandsBizLogic
     {
 		Task<BaseRepsonse> CreateUpadteBrands(BrandModel model);
+		Task<BrandModel> GetBrand(long id);
 	}
 }

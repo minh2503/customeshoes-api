@@ -52,5 +52,10 @@ namespace App.DAL.Implements
 			}
 			return await SaveAsync();
 		}
+
+		public async Task<App_BrandDTO> GetBrand(long id)
+		{
+			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(b => b.Id.Equals(id));
+		}
 	}
 }
