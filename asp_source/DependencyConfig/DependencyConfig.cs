@@ -30,6 +30,8 @@ namespace App.EcommerceAPI.DependencyConfig
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IRoleClaimRepository, RoleClaimRepository>();
             services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
 
         }
     }

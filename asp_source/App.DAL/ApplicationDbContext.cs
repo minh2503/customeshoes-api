@@ -27,14 +27,21 @@ namespace App.DAL
         public DbSet<SHIPDistrictDTO> ShipDistrict { get; set; }
         public DbSet<SHIPProvinceDTO> ShipProvince { get; set; }
         public DbSet<SHIPWardDTO> ShipWard { get; set; }
-        #endregion
+		#endregion
 
-        public DbSet<App_UserDetailDTO> App_UserDetails { get; set; }
+		#region App
+		public DbSet<App_UserDetailDTO> App_UserDetails { get; set; }
+		public DbSet<App_BrandDTO> App_Brands { get; set; }
+		#endregion
 
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<App_BrandDTO>(x =>
+            {
+                x.ToTable("App_Brand");
+                x.HasKey("Id");
+            });
             modelBuilder.Entity<App_UserDetailDTO>(b =>
             {
                 b.ToTable("App_UserDetails");
