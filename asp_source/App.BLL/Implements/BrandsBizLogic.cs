@@ -40,5 +40,12 @@ namespace App.BLL.Implements
 			if(!data.Any()) return data.Select(b => new BrandModel()).ToList();
 			return data.Select(x => new BrandModel(x)).ToList();
 		}
+
+		public async Task<List<BrandModel>> GetTop5Brand()
+		{
+			var data = await _brandRepository.GetTop5Brands();
+			if (!data.Any()) return data.Select(b => new BrandModel()).ToList();
+			return data.Select(x => new BrandModel(x)).ToList();
+		}
 	}
 }

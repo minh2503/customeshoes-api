@@ -46,7 +46,7 @@ namespace tapluyen.api.Controllers
 			{
 				var response = await _brandsBizLogic.GetBrand(id);
 				if(response == null) return GetError();
-				return SaveSuccess(response);
+				return GetSuccess(response);
 			}
 
 			catch (Exception ex)
@@ -63,7 +63,22 @@ namespace tapluyen.api.Controllers
 			{
 				var data = await _brandsBizLogic.GetListBrands(paging);
 				var result = new PagingDataModel<BrandModel>(data, paging);
-				return SaveSuccess(result);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllBrands: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpGet("get-top-5-brand")]
+		public async Task<IActionResult> GetTop5Brand()
+		{
+			try
+			{
+				var data = await _brandsBizLogic.GetTop5Brand();
+				return GetSuccess(data);
 			}
 			catch (Exception ex)
 			{

@@ -14,5 +14,6 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> CreateUpadteBrands(BrandModel model);
 		Task<BrandModel> GetBrand(long id);
 		Task<List<BrandModel>> GetListBrands(PagingModel paging);
+		Task<List<BrandModel>> GetTop5Brand();
 	}
 }
