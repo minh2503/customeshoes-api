@@ -15,5 +15,6 @@ namespace App.DAL.Interfaces
         Task<BaseRepsonse> CreateUpadteUserDetails(App_UserDetailDTO dto, long userId);
         Task<App_UserDetailDTO> GetUserDetail(long userId);
         Task<List<App_UserDetailDTO>> GetAllUsersDetail(PagingModel paging);
+        Task<BaseRepsonse> DeleteUserDetail(long userId);
     }
 }

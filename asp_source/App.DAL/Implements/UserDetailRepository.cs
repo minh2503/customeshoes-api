@@ -52,7 +52,21 @@ namespace App.DAL.Implements
             return await SaveAsync();
         }
 
-        public async Task<List<App_UserDetailDTO>> GetAllUsersDetail(PagingModel paging)
+		public async Task<BaseRepsonse> DeleteUserDetail(long userId)
+		{
+			var any = await _dbAppContext.App_UserDetails.AnyAsync(x => x.UserId == userId);
+			if (any)
+			{
+				var userDetail = await _dbAppContext.App_UserDetails.FirstOrDefaultAsync(x => x.UserId == userId);
+				if (userId != userDetail.UserId) return new BaseRepsonse { IsSuccess = false, Message = Constants.UserNotSame };
+                userDetail.IsActive = false;
+				_dbAppContext.App_UserDetails.Update(userDetail);
+                return await SaveAsync();
+			}
+            return new BaseRepsonse {IsSuccess = false, Message = Constants.SaveDataFailed};
+		}
+
+		public async Task<List<App_UserDetailDTO>> GetAllUsersDetail(PagingModel paging)
         {
             return await _dbAppContext.App_UserDetails.ToPagedList(paging.PageNumber, paging.PageSize).AsNoTracking().ToListAsync();
         }

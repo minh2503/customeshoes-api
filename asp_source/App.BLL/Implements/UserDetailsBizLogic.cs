@@ -35,5 +35,11 @@ namespace App.BLL.Implements
             var data = await _userDetailsRepository.GetAllUsersDetail(paging);
             return data.Select(x => new UserDetailModel(x)).ToList();
         }
-    }
+
+		public async Task<BaseRepsonse> DeleteUserDetailAsync(long userId)
+		{
+			var response = await _userDetailsRepository.DeleteUserDetail(userId);
+            return response;
+		}
+	}
 }

@@ -9,7 +9,7 @@ namespace tapluyen.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserDetailController : BaseAPIController
     {
         private readonly IUserDetailsBizLogic _userDetailsBizLogic;
@@ -70,5 +70,15 @@ namespace tapluyen.api.Controllers
                 return SaveError(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("delete-user-detail")]
+        public async Task<IActionResult> DeleteUserDetailAsync()
+        {
+            var userId = UserId;
+            var response = await _userDetailsBizLogic.DeleteUserDetailAsync(userId);
+			if (!response.IsSuccess) return SaveError(response.Message);
+			return SaveSuccess(response);
+		}
     }
 }

@@ -14,5 +14,6 @@ namespace App.BLL.Interfaces
         Task<BaseRepsonse> CreateUpadteUserDetails(UserDetailModel dto, long userId);
         Task<UserDetailModel> GetUserDetail(long userId);
         Task<List<UserDetailModel>> GetListUserDetail(PagingModel paging);
+        Task<BaseRepsonse> DeleteUserDetailAsync(long userId);
     }
 }
