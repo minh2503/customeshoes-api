@@ -83,6 +83,11 @@ namespace App.DAL.Implements
 			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(b => b.Id.Equals(id));
 		}
 
+		public async Task<App_BrandDTO> GetBrandByName(string name)
+		{
+			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(x => x.Name.Equals(name));
+		}
+
 		public async Task<List<App_BrandDTO>> GetTop5Brands()
 		{
 			var loadedRecord = _dbAppContext.App_Brands.Where(x => x.IsActive == true);

@@ -40,6 +40,13 @@ namespace App.BLL.Implements
 			return new BrandModel(response);
 		}
 
+		public async Task<BrandModel> GetBrandByName(string name)
+		{
+			var response = await _brandRepository.GetBrandByName(name);
+			if (response == null) return null;
+			return new BrandModel(response);
+		}
+
 		public async Task<List<BrandModel>> GetListBrands(PagingModel paging)
 		{
 			var data = await _brandRepository.GetAllBrands(paging);
