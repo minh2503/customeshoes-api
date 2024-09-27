@@ -47,6 +47,13 @@ namespace App.BLL.Implements
 			return new BrandModel(response);
 		}
 
+		public async Task<List<BrandModel>> GetBrandsWithoutPaging()
+		{
+			var data = await _brandRepository.GetBrandsWithoutPaging();
+			if (!data.Any()) return data.Select(b => new BrandModel()).ToList();
+			return data.Select(x => new BrandModel(x)).ToList();
+		}
+
 		public async Task<List<BrandModel>> GetListBrands(PagingModel paging)
 		{
 			var data = await _brandRepository.GetAllBrands(paging);

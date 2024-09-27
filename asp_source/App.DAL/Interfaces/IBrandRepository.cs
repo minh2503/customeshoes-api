@@ -15,6 +15,7 @@ namespace App.DAL.Interfaces
 		Task<App_BrandDTO> GetBrand(long id);
 		Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging);
 		Task<List<App_BrandDTO>> GetTop5Brands();
+		Task<List<App_BrandDTO>> GetBrandsWithoutPaging();
 		Task<BaseRepsonse> DeleteBrand(long id);
 		Task<App_BrandDTO> GetBrandByName(string name);
 	}

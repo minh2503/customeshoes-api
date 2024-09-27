@@ -88,6 +88,11 @@ namespace App.DAL.Implements
 			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(x => x.Name.Equals(name));
 		}
 
+		public Task<List<App_BrandDTO>> GetBrandsWithoutPaging()
+		{
+			return _dbAppContext.App_Brands.Where(x => x.IsActive == true).ToListAsync();
+		}
+
 		public async Task<List<App_BrandDTO>> GetTop5Brands()
 		{
 			var loadedRecord = _dbAppContext.App_Brands.Where(x => x.IsActive == true);
