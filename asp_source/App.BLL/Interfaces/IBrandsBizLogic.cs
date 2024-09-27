@@ -9,11 +9,12 @@ using TFU.Common.Models;
 
 namespace App.BLL.Interfaces
 {
-    public interface IBrandsBizLogic
-    {
+	public interface IBrandsBizLogic
+	{
 		Task<BaseRepsonse> CreateUpadteBrands(BrandModel model);
 		Task<BrandModel> GetBrand(long id);
 		Task<List<BrandModel>> GetListBrands(PagingModel paging);
 		Task<List<BrandModel>> GetTop5Brand();
+		Task<BaseRepsonse> DeleteBrand(long id);
 	}
 }

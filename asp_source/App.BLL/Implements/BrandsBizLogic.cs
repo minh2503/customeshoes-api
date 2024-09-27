@@ -27,6 +27,12 @@ namespace App.BLL.Implements
 			return response;
 		}
 
+		public async Task<BaseRepsonse> DeleteBrand(long id)
+		{
+			var response =  await _brandRepository.DeleteBrand(id);
+			return response;
+		}
+
 		public async Task<BrandModel> GetBrand(long id)
 		{
 			var response = await _brandRepository.GetBrand(id);

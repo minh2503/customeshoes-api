@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common;
 using TFU.Common.Extension;
 using TFU.Common.Models;
 using TFU.EntityFramework;
@@ -53,6 +54,20 @@ namespace App.DAL.Implements
 				_dbAppContext.App_Brands.Add(brand);
 			}
 			return await SaveAsync();
+		}
+
+		public async Task<BaseRepsonse> DeleteBrand(long id)
+		{
+			var any = await _dbAppContext.App_Brands.AnyAsync(x => x.Id.Equals(id));
+			if (any)
+			{
+				var brand = await _dbAppContext.App_Brands.FirstOrDefaultAsync(x => x.Id.Equals(id));
+				if (brand == null) return new BaseRepsonse { IsSuccess = false, Message = Constants.GetDataFailed };
+				brand.IsActive = false;
+				_dbAppContext.App_Brands.Update(brand);
+				return await SaveAsync();
+			}
+			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
 		}
 
 		public async Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging)

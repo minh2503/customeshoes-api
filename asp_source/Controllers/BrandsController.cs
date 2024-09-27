@@ -86,5 +86,14 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("delete-brand/{id}")]
+		public async Task<IActionResult> DeleteUserDetailAsync([FromRoute]long id)
+		{
+			var response = await _brandsBizLogic.DeleteBrand(id);
+			if (!response.IsSuccess) return SaveError(response.Message);
+			return SaveSuccess(response);
+		}
 	}
 }
