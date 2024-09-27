@@ -72,9 +72,10 @@ namespace App.DAL.Implements
 
 		public async Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging)
 		{
-			return await _dbAppContext.App_Brands.Where(x => x.IsActive == true)
-												.ToPagedList(paging.PageNumber, paging.PageSize)
-												.ToListAsync();
+			var loadedRecord = _dbAppContext.App_Brands.Where(x => x.IsActive == true);
+			paging.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize)
+								.ToListAsync();
 		}
 
 		public async Task<App_BrandDTO> GetBrand(long id)
@@ -84,9 +85,8 @@ namespace App.DAL.Implements
 
 		public async Task<List<App_BrandDTO>> GetTop5Brands()
 		{
-			return await _dbAppContext.App_Brands.Where(x => x.IsActive == true)
-												.Take(5)
-												.ToListAsync();
+			var loadedRecord = _dbAppContext.App_Brands.Where(x => x.IsActive == true);
+			return await loadedRecord.Take(5).ToListAsync();
 		}
 	}
 }

@@ -1,24 +1,29 @@
 ﻿using App.BLL.Implements;
 using App.BLL.Interfaces;
 using App.Entity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFU.APIBased;
+using TFU.BLL.Interfaces;
 using TFU.Common.Models;
 
 namespace tapluyen.api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class BrandsController : BaseAPIController
 	{
 		private readonly IBrandsBizLogic _brandsBizLogic;
 		private readonly ILogger<BrandsController> _logger;
+		private readonly IIdentityBizLogic _identityBizLogic;
 
-		public BrandsController(IBrandsBizLogic brandsBizLogic, ILogger<BrandsController> logger)
+		public BrandsController(IBrandsBizLogic brandsBizLogic, ILogger<BrandsController> logger, IIdentityBizLogic identityBizLogic)
         {
 			this._brandsBizLogic = brandsBizLogic;
 			this._logger = logger;
+			this._identityBizLogic = identityBizLogic;
 		}
 
 		[HttpPost("create-update-brands")]
@@ -26,7 +31,13 @@ namespace tapluyen.api.Controllers
 		{
 			try
 			{
+				var user = await _identityBizLogic.GetByIdAsync(UserId);
+				if(user == null)
+				{
+					return Error("Không tìm thấy người dùng");
+				}
 				if (!ModelState.IsValid) return ModelInvalid();
+				model.CreatedBy = user.UserName;
 				var response = await _brandsBizLogic.CreateUpadteBrands(model);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);
