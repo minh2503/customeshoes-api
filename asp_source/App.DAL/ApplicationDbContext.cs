@@ -32,11 +32,18 @@ namespace App.DAL
 		#region App
 		public DbSet<App_UserDetailDTO> App_UserDetails { get; set; }
 		public DbSet<App_BrandDTO> App_Brands { get; set; }
+		public DbSet<App_ShoesDTO> App_Shoes { get; set; }
 		#endregion
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<App_ShoesDTO>(x =>
+            {
+                x.ToTable("App_Shoes");
+                x.HasKey(x => x.Id);
+            });
+
             modelBuilder.Entity<App_BrandDTO>(x =>
             {
                 x.ToTable("App_Brand");

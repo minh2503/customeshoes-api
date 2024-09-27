@@ -23,15 +23,18 @@ namespace App.EcommerceAPI.DependencyConfig
             services.AddTransient<IMenuBizLogic, MenuBizLogic>();
             services.AddTransient<IRoleClaimRepository, RoleClaimRepository>();
             services.AddTransient<IUserDetailsBizLogic, UserDetailsBizLogic>();
+			services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
+			services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
+			services.AddTransient<IShoesBizLogic, ShoesBizLogic>();
 
-            //DAL
-            services.AddTransient<IIdentityRepository, IdentityRepository>();
+			//DAL
+			services.AddTransient<IIdentityRepository, IdentityRepository>();
             services.AddTransient<ITFURepository, TFURepository>();
             services.AddTransient<IMenuRepository, MenuRepository>();
             services.AddTransient<IRoleClaimRepository, RoleClaimRepository>();
             services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
-            services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
+            services.AddTransient<IShoesRepository, ShoesRepository>();
 
         }
     }
