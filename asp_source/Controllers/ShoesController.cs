@@ -79,7 +79,7 @@ namespace tapluyen.api.Controllers
 			try
 			{
 				var response = await _shoesBizLogic.GetShoes(id);
-				if (response == null) return GetError("Giày không tồn tại");
+				if (response == null || response.IsActive == false) return GetError("Giày không tồn tại");
 				return GetSuccess(response);
 			}
 			catch (Exception ex)
