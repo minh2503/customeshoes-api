@@ -51,7 +51,7 @@ namespace tapluyen.api.Controllers
 
 		[HttpGet]
 		[Route("get-brand/{id}")]
-		public async Task<IActionResult> GetUserDetail([FromRoute]long id)
+		public async Task<IActionResult> GetBrand([FromRoute]long id)
 		{
 			try
 			{
@@ -100,11 +100,19 @@ namespace tapluyen.api.Controllers
 
 		[HttpPost]
 		[Route("delete-brand/{id}")]
-		public async Task<IActionResult> DeleteUserDetailAsync([FromRoute]long id)
+		public async Task<IActionResult> DeleteBrand([FromRoute]long id)
 		{
-			var response = await _brandsBizLogic.DeleteBrand(id);
-			if (!response.IsSuccess) return SaveError(response.Message);
-			return SaveSuccess(response);
+			try
+			{
+				var response = await _brandsBizLogic.DeleteBrand(id);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError("DeleteBrand: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
 		}
 	}
 }
