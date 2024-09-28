@@ -9,6 +9,7 @@ namespace TFU.Common.Models
         public string Keyword { get; set; }
         public string BrandName { get; set; }
 		public PriceFilter? PriceFilter { get; set; }
+		public long ShoesId { get; set; }
 		public string OrderBy { get; set; }
         public string OrderDirection { get; set; }
         [OutputParam]

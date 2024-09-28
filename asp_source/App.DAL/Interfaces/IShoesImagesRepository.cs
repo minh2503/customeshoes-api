@@ -12,7 +12,8 @@ namespace App.DAL.Interfaces
 	public interface IShoesImagesRepository
 	{
 		Task<BaseRepsonse> CreateUpdateShoesImages(App_ShoesImagesDTO dto);
-		Task<App_ShoesImagesDTO> GetShoesImagesDTO(long id);
+		Task<App_ShoesImagesDTO> GetShoesImages(long id);
 		Task<List<App_ShoesImagesDTO>> GetAllShoesImages(PagingModel model);
+		Task<List<App_ShoesImagesDTO>> GetListShoesImagesByShoes(PagingModel model);
 	}
 }
