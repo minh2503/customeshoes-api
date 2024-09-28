@@ -80,7 +80,7 @@ namespace App.DAL.Implements
 
 		public async Task<App_BrandDTO> GetBrand(long id)
 		{
-			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(b => b.Id.Equals(id) && b.IsActive == true);
+			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(b => b.Id.Equals(id));
 		}
 
 		public async Task<App_BrandDTO> GetBrandByName(string name)
