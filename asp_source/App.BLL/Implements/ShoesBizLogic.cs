@@ -1,4 +1,5 @@
 ﻿using App.BLL.Interfaces;
+using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Implements
 {
@@ -22,6 +24,13 @@ namespace App.BLL.Implements
 		{
 			var dto = model.GetEntity();
 			return await _shoesRepository.CreateUpdateShoes(dto);
+		}
+
+		public async Task<List<ShoesModel>> GetListShoes(PagingModel paging)
+		{
+			var data = await _shoesRepository.GetAllShoes(paging);
+			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
+			return data.Select(x => new ShoesModel(x)).ToList();
 		}
 
 		public async Task<ShoesModel> GetShoes(long id)
