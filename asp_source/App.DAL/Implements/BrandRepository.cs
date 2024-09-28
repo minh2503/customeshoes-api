@@ -63,6 +63,7 @@ namespace App.DAL.Implements
 			{
 				var brand = await _dbAppContext.App_Brands.FirstOrDefaultAsync(x => x.Id.Equals(id));
 				if (brand == null) return new BaseRepsonse { IsSuccess = false, Message = Constants.GetDataFailed };
+				if (brand.IsActive == false) return new BaseRepsonse { IsSuccess = false, Message = "Hãng giày không khả dụng." };
 				brand.IsActive = false;
 				_dbAppContext.App_Brands.Update(brand);
 				return await SaveAsync();
