@@ -26,6 +26,7 @@ namespace App.EcommerceAPI.DependencyConfig
 			services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
 			services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
 			services.AddTransient<IShoesBizLogic, ShoesBizLogic>();
+			services.AddTransient<IShoesImagesBizLogic, ShoesImagesBizLogic>();
 
 			//DAL
 			services.AddTransient<IIdentityRepository, IdentityRepository>();
@@ -35,7 +36,7 @@ namespace App.EcommerceAPI.DependencyConfig
             services.AddTransient<IUserDetailsRepository, UserDetailsRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<IShoesRepository, ShoesRepository>();
-
+            services.AddTransient<IShoesImagesRepository, ShoesImagesRepository>();
         }
     }
 }

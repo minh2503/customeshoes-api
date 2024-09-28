@@ -1,0 +1,57 @@
+﻿using App.DAL.Interfaces;
+using App.Entity;
+using App.Entity.DTO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TFU.EntityFramework;
+
+namespace App.DAL.Implements
+{
+	public class ShoesImagesRepository : AppBaseRepository, IShoesImagesRepository
+	{
+		private readonly ApplicationDbContext _dbAppContext;
+
+		public ShoesImagesRepository(IConfiguration config, TFUDbContext dbTFUContext, ApplicationDbContext dbAppContext)
+               : base(config, dbTFUContext, dbAppContext)
+        {
+			this._dbAppContext = dbAppContext;
+		}
+
+		public async Task<BaseRepsonse> CreateUpdateShoesImages(App_ShoesImagesDTO dto)
+		{
+			var any = await _dbAppContext.App_ShoesImages.AnyAsync(x => x.Id.Equals(dto.Id));
+			if (any)
+			{
+				var shoesImage = _dbAppContext.App_ShoesImages.FirstOrDefault(x => x.Id.Equals(dto.Id));
+				if(shoesImage == null) return new BaseRepsonse { IsSuccess = false , Message = "Không tìm thấy ảnh."};
+				shoesImage.Id = dto.Id;
+				shoesImage.Thumbnail = dto.Thumbnail;
+				shoesImage.IsCustomize = dto.IsCustomize;
+				shoesImage.ShoesId = dto.ShoesId;
+				_dbAppContext.App_ShoesImages.Update(shoesImage);
+			}
+			else
+			{
+				var shoesImage = new App_ShoesImagesDTO
+				{
+					Id = dto.Id,
+					ShoesId = dto.ShoesId,
+					Thumbnail = dto.Thumbnail,
+					IsCustomize = dto.IsCustomize
+				};
+				_dbAppContext.App_ShoesImages.Add(shoesImage);
+			}
+			return await SaveAsync();
+		}
+
+		public async Task<App_ShoesImagesDTO> GetShoesImagesDTO(long id)
+		{
+			return await _dbAppContext.App_ShoesImages.FirstOrDefaultAsync(b => b.Id.Equals(id));
+		}
+	}
+}

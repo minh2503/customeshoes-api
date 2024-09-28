@@ -33,12 +33,19 @@ namespace App.DAL
 		public DbSet<App_UserDetailDTO> App_UserDetails { get; set; }
 		public DbSet<App_BrandDTO> App_Brands { get; set; }
 		public DbSet<App_ShoesDTO> App_Shoes { get; set; }
+		public DbSet<App_ShoesImagesDTO> App_ShoesImages { get; set; }
 		#endregion
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<App_ShoesDTO>(x =>
+			modelBuilder.Entity<App_ShoesImagesDTO>(x =>
+			{
+				x.ToTable("App_ShoesImages");
+				x.HasKey(x => x.Id);
+			});
+
+			modelBuilder.Entity<App_ShoesDTO>(x =>
             {
                 x.ToTable("App_Shoes");
                 x.HasKey(x => x.Id);
