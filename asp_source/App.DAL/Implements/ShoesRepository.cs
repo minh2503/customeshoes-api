@@ -87,6 +87,31 @@ namespace App.DAL.Implements
 			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
 
+		public async Task<List<App_ShoesDTO>> GetListShoesByBrand(PagingModel paging)
+		{
+			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
+			loadedRecord = loadedRecord.Where(x => x.BrandName.Contains(paging.BrandName));
+			paging.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
+		}
+
+		public async Task<List<App_ShoesDTO>> GetListShoesByKey(PagingModel paging)
+		{
+			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
+			loadedRecord = loadedRecord.Where(x => x.Name.Contains(paging.Keyword));
+			paging.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
+		}
+
+		public async Task<List<App_ShoesDTO>> GetListShoesByPrice(PagingModel paging)
+		{
+			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
+			var priceRange = PriceRangeHelper.GetPriceRange(paging.PriceFilter.Value);
+			loadedRecord = loadedRecord.Where(x => x.Price >= priceRange.min && x.Price <= priceRange.max);
+			paging.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
+		}
+
 		public async Task<App_ShoesDTO> GetShoes(long id)
 		{
 			return await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Id.Equals(id));

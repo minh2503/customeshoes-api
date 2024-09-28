@@ -52,5 +52,28 @@ namespace App.BLL.Implements
 			var respose = await _shoesRepository.DeleteShoes(id);
 			return respose;
 		}
+
+		public async Task<List<ShoesModel>> GetListShoesByBrand(PagingModel paging)
+		{
+			paging.BrandName = paging.BrandName.Trim();
+			var data = await _shoesRepository.GetListShoesByBrand(paging);
+			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
+			return data.Select(x => new ShoesModel(x)).ToList();
+		}
+
+		public async Task<List<ShoesModel>> GetListShoesByPrice(PagingModel paging)
+		{
+			var data = await _shoesRepository.GetListShoesByPrice(paging);
+			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
+			return data.Select(x => new ShoesModel(x)).ToList();
+		}
+
+		public async Task<List<ShoesModel>> GetListShoesByKey(PagingModel paging)
+		{
+			paging.Keyword = paging.Keyword.Trim();
+			var data = await _shoesRepository.GetListShoesByKey(paging);
+			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
+			return data.Select(x => new ShoesModel(x)).ToList();
+		}
 	}
 }
