@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common;
 using TFU.Common.Extension;
 using TFU.Common.Models;
 using TFU.DAL;
@@ -62,6 +63,21 @@ namespace App.DAL.Implements
 				_dbAppContext.App_Shoes.Add(shoes);
 			}
 			return await SaveAsync();
+		}
+
+		public async Task<BaseRepsonse> DeleteShoes(long id)
+		{
+			var any = await _dbAppContext.App_Shoes.AnyAsync(x => x.Id.Equals(id));
+			if (any)
+			{
+				var shoes = await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Id.Equals(id));
+				if (shoes == null) return new BaseRepsonse { IsSuccess = false, Message = Constants.GetDataFailed };
+				if(shoes.IsActive == false) return new BaseRepsonse { IsSuccess = false, Message = "Giày không khả dụng." };
+				shoes.IsActive = false;
+				_dbAppContext.App_Shoes.Update(shoes);
+				return await SaveAsync();
+			}
+			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
 		}
 
 		public async Task<List<App_ShoesDTO>> GetAllShoes(PagingModel paging)

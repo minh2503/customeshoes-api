@@ -105,5 +105,22 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("delete-shoes/{id}")]
+		public async Task<IActionResult> DeleteShoes([FromRoute] long id)
+		{
+			try
+			{
+				var response = await _shoesBizLogic.DeleteShoes(id);
+				if(!response.IsSuccess) return SaveError(response);
+				return SaveSuccess(response);
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError("DeleteShoes: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
     }
 }

@@ -15,5 +15,6 @@ namespace App.BLL.Interfaces
 		Task<ShoesModel> GetShoesByName(string name);
 		Task<ShoesModel> GetShoes(long id);
 		Task<List<ShoesModel>> GetListShoes(PagingModel paging);
+		Task<BaseRepsonse> DeleteShoes(long id);
 	}
 }

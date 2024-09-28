@@ -46,5 +46,11 @@ namespace App.BLL.Implements
 			if (response == null) return null;
 			return new ShoesModel(response);
 		}
+
+		public async Task<BaseRepsonse> DeleteShoes(long id)
+		{
+			var respose = await _shoesRepository.DeleteShoes(id);
+			return respose;
+		}
 	}
 }
