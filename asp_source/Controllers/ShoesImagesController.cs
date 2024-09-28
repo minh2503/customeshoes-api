@@ -52,5 +52,23 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpGet]
+		[Route("get-shoes-images/{id}")]
+		public async Task<IActionResult> GetShoesImages([FromRoute] long id)
+		{
+			try
+			{
+				var response = await _shoesImagesBizLogic.GetShoesImages(id);
+				if (response == null) return GetError("Không tìm thấy ảnh.");
+				return GetSuccess(response);
+			}
+
+			catch (Exception ex)
+			{
+				_logger.LogError("GetShoesImages: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }
