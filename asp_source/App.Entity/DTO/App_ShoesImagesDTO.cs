@@ -11,6 +11,7 @@ namespace App.Entity.DTO
 		public long Id { get; set; }
 		public long ShoesId { get; set; }
 		public string? Thumbnail {  get; set; }
-		public bool IsCustomize { get; set; }
+		public bool? IsCustomize { get; set; }
+		public bool? IsUserCustom { get; set; }
 	}
 }

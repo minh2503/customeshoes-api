@@ -47,5 +47,12 @@ namespace App.BLL.Implements
 			if (response == null) return null;
 			return new ShoesImagesModel(response);
 		}
+
+		public async Task<List<ShoesImagesModel>> GetUserCustomShoesImagesByShoes(PagingModel paging)
+		{
+			var data = await _shoesImagesRepository.GetUserCustomShoesImagesByShoes(paging);
+			if (!data.Any()) return data.Select(b => new ShoesImagesModel()).ToList();
+			return data.Select(x => new ShoesImagesModel(x)).ToList();
+		}
 	}
 }

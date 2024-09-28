@@ -34,6 +34,7 @@ namespace App.DAL.Implements
 				shoesImage.Id = dto.Id;
 				shoesImage.Thumbnail = dto.Thumbnail;
 				shoesImage.IsCustomize = dto.IsCustomize;
+				shoesImage.IsUserCustom = dto.IsUserCustom;
 				shoesImage.ShoesId = dto.ShoesId;
 				_dbAppContext.App_ShoesImages.Update(shoesImage);
 			}
@@ -44,7 +45,8 @@ namespace App.DAL.Implements
 					Id = dto.Id,
 					ShoesId = dto.ShoesId,
 					Thumbnail = dto.Thumbnail,
-					IsCustomize = dto.IsCustomize
+					IsCustomize = dto.IsCustomize,
+					IsUserCustom = dto.IsUserCustom,
 				};
 				_dbAppContext.App_ShoesImages.Add(shoesImage);
 			}
@@ -54,6 +56,15 @@ namespace App.DAL.Implements
 		public async Task<List<App_ShoesImagesDTO>> GetAllShoesImages(PagingModel model)
 		{
 			var loadedRecord = _dbAppContext.App_ShoesImages.AsQueryable();
+			model.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(model.PageNumber, model.PageSize)
+								.ToListAsync();
+		}
+
+		public async Task<List<App_ShoesImagesDTO>> GetUserCustomShoesImagesByShoes(PagingModel model)
+		{
+			var loadedRecord = _dbAppContext.App_ShoesImages.AsQueryable();
+			loadedRecord = loadedRecord.Where(x => x.ShoesId.Equals(model.ShoesId) && x.IsUserCustom == true);
 			model.TotalRecord = await loadedRecord.CountAsync();
 			return await loadedRecord.ToPagedList(model.PageNumber, model.PageSize)
 								.ToListAsync();

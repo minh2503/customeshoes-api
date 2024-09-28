@@ -91,7 +91,7 @@ namespace tapluyen.api.Controllers
 
 		[HttpPost()]
 		[Route("get-all-shoes-images-by-shoes-paging")]
-		public async Task<IActionResult> GetAllShoesImagesByPaging([FromBody] PagingModel paging)
+		public async Task<IActionResult> GetAllShoesImagesByShoes([FromBody] PagingModel paging)
 		{
 			try
 			{
@@ -113,7 +113,36 @@ namespace tapluyen.api.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("GetAllShoesImagesByPaging: {0} {1}", ex.Message, ex.StackTrace);
+				_logger.LogError("GetAllShoesImagesByShoes: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost()]
+		[Route("get-all-user-custom-shoes-images-by-shoes-paging")]
+		public async Task<IActionResult> GetUserCustomShoesImagesByShoes([FromBody] PagingModel paging)
+		{
+			try
+			{
+				if (paging.ShoesId == 0)
+				{
+					ModelState.AddModelError("ShoesId", "Không được để trống ShoesId.");
+					return ModelInvalid();
+				}
+
+				var shoes = await _shoesBizLogic.GetShoes(paging.ShoesId);
+				if (shoes == null || shoes.IsActive == false)
+				{
+					ModelState.AddModelError("ShoesId", "Giày không khả dụng.");
+					return ModelInvalid();
+				}
+				var data = await _shoesImagesBizLogic.GetUserCustomShoesImagesByShoes(paging);
+				var result = new PagingDataModel<ShoesImagesModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetUserCustomShoesImagesByShoes: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}

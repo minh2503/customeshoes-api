@@ -15,7 +15,8 @@ namespace App.Entity.Models
 		[Required(ErrorMessage = "Giày không được để trống.")]
 		public long ShoesId { get; set; }
 		public string? Thumbnail { get; set; }
-		public bool IsCustomize { get; set; }
+		public bool? IsCustomize { get; set; }
+		public bool? IsUserCustom { get; set; }
 
         public ShoesImagesModel()
         {
@@ -28,6 +29,7 @@ namespace App.Entity.Models
 			Thumbnail = dto.Thumbnail;
 			IsCustomize = dto.IsCustomize;
 			ShoesId = dto.ShoesId;
+			IsUserCustom = dto.IsUserCustom;
         }
 
         public App_ShoesImagesDTO GetEntity()
@@ -37,7 +39,8 @@ namespace App.Entity.Models
 				Id = Id,
 				Thumbnail = Thumbnail,
 				IsCustomize = IsCustomize,
-				ShoesId = ShoesId
+				ShoesId = ShoesId,
+				IsUserCustom = IsUserCustom
 			};
 		}
 	}

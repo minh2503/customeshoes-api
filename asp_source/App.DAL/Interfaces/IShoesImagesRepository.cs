@@ -15,5 +15,6 @@ namespace App.DAL.Interfaces
 		Task<App_ShoesImagesDTO> GetShoesImages(long id);
 		Task<List<App_ShoesImagesDTO>> GetAllShoesImages(PagingModel model);
 		Task<List<App_ShoesImagesDTO>> GetListShoesImagesByShoes(PagingModel model);
+		Task<List<App_ShoesImagesDTO>> GetUserCustomShoesImagesByShoes(PagingModel model);
 	}
 }
