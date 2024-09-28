@@ -12,5 +12,6 @@ namespace App.BLL.Interfaces
 	{
 		Task<BaseRepsonse> CreateUpadteShoes(ShoesModel model);
 		Task<ShoesModel> GetShoesByName(string name);
+		Task<ShoesModel> GetShoes(long id);
 	}
 }

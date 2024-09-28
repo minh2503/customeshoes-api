@@ -70,5 +70,22 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpGet]
+		[Route("get-shoes/{id}")]
+		public async Task<IActionResult> GetShoes([FromRoute] long id)
+		{
+			try
+			{
+				var response = await _shoesBizLogic.GetShoes(id);
+				if (response == null) return GetError("Giày không tồn tại");
+				return GetSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetShoes: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
     }
 }

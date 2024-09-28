@@ -62,6 +62,11 @@ namespace App.DAL.Implements
 			return await SaveAsync();
 		}
 
+		public async Task<App_ShoesDTO> GetShoes(long id)
+		{
+			return await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Id.Equals(id));
+		}
+
 		public async Task<App_ShoesDTO> GetShoesByName(string name)
 		{
 			return await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Name.Equals(name));

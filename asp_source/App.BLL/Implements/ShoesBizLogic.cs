@@ -24,6 +24,13 @@ namespace App.BLL.Implements
 			return await _shoesRepository.CreateUpdateShoes(dto);
 		}
 
+		public async Task<ShoesModel> GetShoes(long id)
+		{
+			var response = await _shoesRepository.GetShoes(id);
+			if (response == null) return null;
+			return new ShoesModel(response);
+		}
+
 		public async Task<ShoesModel> GetShoesByName(string name)
 		{
 			var response = await _shoesRepository.GetShoesByName(name);

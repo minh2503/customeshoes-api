@@ -12,5 +12,6 @@ namespace App.DAL.Interfaces
 	{
 		Task<BaseRepsonse> CreateUpdateShoes(App_ShoesDTO dto);
 		Task<App_ShoesDTO> GetShoesByName(string name);
+		Task<App_ShoesDTO> GetShoes(long id);
 	}
 }
