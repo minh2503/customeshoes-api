@@ -7,7 +7,8 @@ namespace TFU.Common.Models
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public string Keyword { get; set; }
-        public string OrderBy { get; set; }
+        public string BrandName { get; set; }
+		public string OrderBy { get; set; }
         public string OrderDirection { get; set; }
         [OutputParam]
         public int TotalRecord { get; set; }

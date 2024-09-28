@@ -83,6 +83,10 @@ namespace App.DAL.Implements
 		public async Task<List<App_ShoesDTO>> GetAllShoes(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
+			if(!string.IsNullOrEmpty(paging.BrandName))
+			{
+				loadedRecord = loadedRecord.Where(x => x.BrandName.Contains(paging.BrandName));
+			}
 			paging.TotalRecord = await loadedRecord.CountAsync();
 			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
