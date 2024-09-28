@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Interfaces
 {
@@ -12,5 +13,6 @@ namespace App.BLL.Interfaces
 	{
 		Task<BaseRepsonse> CreateUpdateShoesImages(ShoesImagesModel model);
 		Task<ShoesImagesModel> GetShoesImages(long id);
+		Task<List<ShoesImagesModel>> GetListShoesImages(PagingModel paging);
 	}
 }

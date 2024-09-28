@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using App.Entity;
 using App.Entity.DTO;
+using TFU.Common.Models;
 
 namespace App.DAL.Interfaces
 {
@@ -12,5 +13,6 @@ namespace App.DAL.Interfaces
 	{
 		Task<BaseRepsonse> CreateUpdateShoesImages(App_ShoesImagesDTO dto);
 		Task<App_ShoesImagesDTO> GetShoesImagesDTO(long id);
+		Task<List<App_ShoesImagesDTO>> GetAllShoesImages(PagingModel model);
 	}
 }

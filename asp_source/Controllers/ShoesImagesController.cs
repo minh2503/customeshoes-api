@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFU.APIBased;
 using TFU.BLL.Interfaces;
+using TFU.Common.Models;
 
 namespace tapluyen.api.Controllers
 {
@@ -67,6 +68,23 @@ namespace tapluyen.api.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError("GetShoesImages: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost()]
+		[Route("get-all-shoes-images-by-paging")]
+		public async Task<IActionResult> GetAllShoesImages([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _shoesImagesBizLogic.GetListShoesImages(paging);
+				var result = new PagingDataModel<ShoesImagesModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllShoesImages: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Implements
 {
@@ -24,6 +25,13 @@ namespace App.BLL.Implements
 			var dto = model.GetEntity();
 			var response = await _shoesImagesRepository.CreateUpdateShoesImages(dto);
 			return response;
+		}
+
+		public async Task<List<ShoesImagesModel>> GetListShoesImages(PagingModel paging)
+		{
+			var data = await _shoesImagesRepository.GetAllShoesImages(paging);
+			if (!data.Any()) return data.Select(b => new ShoesImagesModel()).ToList();
+			return data.Select(x => new ShoesImagesModel(x)).ToList();
 		}
 
 		public async Task<ShoesImagesModel> GetShoesImages(long id)

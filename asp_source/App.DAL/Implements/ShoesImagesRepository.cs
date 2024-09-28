@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Extension;
+using TFU.Common.Models;
 using TFU.EntityFramework;
 
 namespace App.DAL.Implements
@@ -47,6 +49,14 @@ namespace App.DAL.Implements
 				_dbAppContext.App_ShoesImages.Add(shoesImage);
 			}
 			return await SaveAsync();
+		}
+
+		public async Task<List<App_ShoesImagesDTO>> GetAllShoesImages(PagingModel model)
+		{
+			var loadedRecord = _dbAppContext.App_ShoesImages;
+			model.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(model.PageNumber, model.PageSize)
+								.ToListAsync();
 		}
 
 		public async Task<App_ShoesImagesDTO> GetShoesImagesDTO(long id)
