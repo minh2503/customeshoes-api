@@ -16,5 +16,6 @@ namespace App.BLL.Interfaces
 		Task<List<ShoesImagesModel>> GetListShoesImages(PagingModel paging);
 		Task<List<ShoesImagesModel>> GetListShoesImagesByShoes(PagingModel paging);
 		Task<List<ShoesImagesModel>> GetUserCustomShoesImagesByShoes(PagingModel paging);
+		Task<BaseRepsonse> DeleteImage(long id);
 	}
 }

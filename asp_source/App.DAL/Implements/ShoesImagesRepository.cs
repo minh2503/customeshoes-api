@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common;
 using TFU.Common.Extension;
 using TFU.Common.Models;
 using TFU.EntityFramework;
@@ -84,5 +85,18 @@ namespace App.DAL.Implements
 			return await _dbAppContext.App_ShoesImages.FirstOrDefaultAsync(b => b.Id.Equals(id));
 		}
 
+		public async Task<BaseRepsonse> DeleteImage(long id)
+		{
+			var any = await _dbAppContext.App_ShoesImages.AnyAsync(x => x.Id.Equals(id));
+			if (any)
+			{
+				var shoesImage = await _dbAppContext.App_ShoesImages.FirstOrDefaultAsync(x => x.Id.Equals(id));
+				if (shoesImage == null) return new BaseRepsonse { IsSuccess = false, Message = Constants.GetDataFailed };
+				if (shoesImage.IsUserCustom == true) return new BaseRepsonse { IsSuccess = false, Message = "Không được phép xóa ảnh custom của khách hàng"};
+				_dbAppContext.App_ShoesImages.Remove(shoesImage);
+				return await SaveAsync();
+			}
+			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
+		}
 	}
 }

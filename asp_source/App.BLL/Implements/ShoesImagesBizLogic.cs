@@ -27,6 +27,12 @@ namespace App.BLL.Implements
 			return response;
 		}
 
+		public async Task<BaseRepsonse> DeleteImage(long id)
+		{
+			var response = await _shoesImagesRepository.DeleteImage(id);
+			return response;
+		}
+
 		public async Task<List<ShoesImagesModel>> GetListShoesImages(PagingModel paging)
 		{
 			var data = await _shoesImagesRepository.GetAllShoesImages(paging);
@@ -54,5 +60,6 @@ namespace App.BLL.Implements
 			if (!data.Any()) return data.Select(b => new ShoesImagesModel()).ToList();
 			return data.Select(x => new ShoesImagesModel(x)).ToList();
 		}
+
 	}
 }

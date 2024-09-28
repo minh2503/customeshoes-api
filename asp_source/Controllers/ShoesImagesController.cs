@@ -146,5 +146,22 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("delete-image/{id}")]
+		public async Task<IActionResult> DeleteImage([FromRoute] long id)
+		{
+			try
+			{
+				var response = await _shoesImagesBizLogic.DeleteImage(id);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("DeleteImage: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }
