@@ -56,7 +56,7 @@ namespace tapluyen.api.Controllers
 			try
 			{
 				var response = await _brandsBizLogic.GetBrand(id);
-				if(response == null) return GetError();
+				if(response == null || response.IsActive == false) return GetError("Hãng giày không tìm thấy.");
 				return GetSuccess(response);
 			}
 
