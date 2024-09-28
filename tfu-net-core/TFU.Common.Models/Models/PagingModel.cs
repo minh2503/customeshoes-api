@@ -8,6 +8,7 @@ namespace TFU.Common.Models
         public int PageSize { get; set; }
         public string Keyword { get; set; }
         public string BrandName { get; set; }
+		public PriceFilter? PriceFilter { get; set; }
 		public string OrderBy { get; set; }
         public string OrderDirection { get; set; }
         [OutputParam]
@@ -25,4 +26,36 @@ namespace TFU.Common.Models
             PageSize = 10
         };
     }
+
+    public enum PriceFilter
+    {
+		Under500K = 1,        // Dưới 500.000đ
+		From500KTo1M = 2,     // 500.000đ - 1.000.000đ
+		From1MTo2M = 3,       // 1.000.000đ - 2.000.000đ
+		From2MTo3M =  4,       // 2.000.000đ - 3.000.000đ
+		Above3M = 5,
+	}
+
+	public class PriceRangeHelper
+	{
+		// Hàm trả về khoảng giá tương ứng với từng enum
+		public static (double min, double max) GetPriceRange(PriceFilter range)
+		{
+			switch (range)
+			{
+				case PriceFilter.Under500K:
+					return (0, 499999);
+				case PriceFilter.From500KTo1M:
+					return (500000, 1000000);
+				case PriceFilter.From1MTo2M:
+					return (1000000, 2000000);
+				case PriceFilter.From2MTo3M:
+					return (2000000, 3000000);
+				case PriceFilter.Above3M:
+					return (3000000, double.MaxValue);
+				default:
+					throw new ArgumentOutOfRangeException(nameof(range), range, null);
+			}
+		}
+	}
 }
