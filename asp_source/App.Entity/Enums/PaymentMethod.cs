@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace App.Entity.Enums
 {
-	public enum Price
+	public enum PaymentMethod
 	{
-		Cheap = 500000,
-		Medium = 1000000,
-		MediumRare = 3000000,
-		Expensive = 5000000
+		COD = 1,
 	}
 }
