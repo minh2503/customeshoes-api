@@ -11,5 +11,8 @@ namespace App.DAL.Interfaces
 	public interface ICheckOutRepository
 	{
 		Task<BaseRepsonse> CheckOutAsync(App_OrderDTO orderDTO, App_OrderItemsDTO orderItemDTO);
+		Task<App_OrderDTO> GetOrderById(long id);
+		Task<App_OrderDTO> GetTheLatestOrder();
+		Task<BaseRepsonse> UpdateOrder(App_OrderDTO dto);
 	}
 }

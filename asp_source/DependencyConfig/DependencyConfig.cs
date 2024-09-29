@@ -27,8 +27,6 @@ namespace App.EcommerceAPI.DependencyConfig
 			services.AddTransient<IBrandsBizLogic, BrandsBizLogic>();
 			services.AddTransient<IShoesBizLogic, ShoesBizLogic>();
 			services.AddTransient<IShoesImagesBizLogic, ShoesImagesBizLogic>();
-			services.AddTransient<IOrderBizLogic, OrderBizLogic>();
-			services.AddTransient<IOrderItemsBizLogic, OrderItemsBizLogic>();
 			services.AddTransient<ICheckOutBizLogic, CheckOutBizLogic>();
 
 			//DAL

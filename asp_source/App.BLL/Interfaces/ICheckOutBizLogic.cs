@@ -12,5 +12,6 @@ namespace App.BLL.Interfaces
 	public interface ICheckOutBizLogic
 	{
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel);
+		Task<BaseRepsonse> UpdateOrder(OrderModel model);
 	}
 }

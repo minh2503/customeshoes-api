@@ -53,7 +53,7 @@ namespace App.DAL.Implements
 
 		public async Task<App_OrderDTO> GetTheLatestOrder()
 		{
-			var lastOrder = await _dbAppContext.App_Orders
+			var lastOrder = await _dbAppContext.App_Orders.AsNoTracking()
 						.OrderByDescending(o => o.OrderId)
 						.FirstOrDefaultAsync();
 			return lastOrder;

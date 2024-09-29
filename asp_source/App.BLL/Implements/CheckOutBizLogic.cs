@@ -17,7 +17,9 @@ namespace App.BLL.Implements
 		private readonly IOrderItemsRepository _orderItemsRepository;
 		private readonly ICheckOutRepository _checkOutRepository;
 
-		public CheckOutBizLogic(IOrderRepository orderRepository, IOrderItemsRepository orderItemsRepository, ICheckOutRepository checkOutRepository)
+		public CheckOutBizLogic(IOrderRepository orderRepository,
+								IOrderItemsRepository orderItemsRepository,
+								ICheckOutRepository checkOutRepository)
         {
 			this._orderRepository = orderRepository;
 			this._orderItemsRepository = orderItemsRepository;
@@ -44,6 +46,17 @@ namespace App.BLL.Implements
 			}
 		}
 
+		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
+		{
+			var dto = model.GetEntity();
+			dto.OrderId = await GenerateIncrementalOrderIdAsync();
+			var repsonse = await _checkOutRepository.UpdateOrder(dto);
+			return repsonse;
+		}
+
+
+
+		#region Private
 		private async Task<string> GenerateIncrementalOrderIdAsync()
 		{
 			string prefix = "G-";
@@ -65,5 +78,6 @@ namespace App.BLL.Implements
 
 			return orderId;
 		}
+		#endregion
 	}
 }

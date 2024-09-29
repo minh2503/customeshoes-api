@@ -71,7 +71,33 @@ namespace tapluyen.api.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("CreateUpdateOrderItem: {0} {1}", ex.Message, ex.StackTrace);
+				_logger.LogError("CheckOutAsync: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost]
+		[Route("update-order")]
+		public async Task<IActionResult> UpdateOrder(OrderModel model)
+		{
+			try
+			{
+				if (!ModelState.IsValid) return ModelInvalid();
+
+				var user = await _identityBizLogic.GetByIdAsync(UserId);
+				if (user == null)
+				{
+					return Error("Không tìm thấy người dùng");
+				}
+				model.ModifiedBy = user.UserName;
+
+				var response = await _checkOutBizLogic.UpdateOrder(model);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}
