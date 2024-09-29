@@ -16,5 +16,6 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> UpdateOrder(OrderModel model);
 		Task<List<OrderModel>> GetAllOrders(PagingModel paging);
 		Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging);
+		Task<List<OrderModel>> GetAllOrdersByKey(PagingModel paging);
 	}
 }

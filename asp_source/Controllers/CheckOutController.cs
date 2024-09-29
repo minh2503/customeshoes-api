@@ -136,5 +136,22 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("get-all-orders-by-userId")]
+		public async Task<IActionResult> GetAllOrdersByKey([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.GetAllOrdersByKey(paging);
+				var result = new PagingDataModel<OrderModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllOrdersByKey: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }

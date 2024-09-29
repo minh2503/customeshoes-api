@@ -71,6 +71,19 @@ namespace App.DAL.Implements
 			return await loadeRecords.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
 
+		public async Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging)
+		{
+			var loadedRecord = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
+			if(!string.IsNullOrEmpty(paging.Keyword))
+			{
+				long userId;
+				long.TryParse(paging.Keyword, out userId);
+				loadedRecord = loadedRecord.Where(x => x.UserId.Equals(userId));
+			}
+			paging.TotalRecord = await loadedRecord.CountAsync();
+			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
+		}
+
 		public async Task<List<App_OrderDTO>> GetAllOrdersByStatus(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
