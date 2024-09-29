@@ -55,6 +55,13 @@ namespace App.BLL.Implements
 			return data.Select(x => new OrderModel(x)).ToList();
 		}
 
+		public async Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging)
+		{
+			var data = await _checkOutRepository.GetAllOrdersByStatus(paging);
+			if (!data.Any()) return data.Select(b => new OrderModel()).ToList();
+			return data.Select(x => new OrderModel(x)).ToList();
+		}
+
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
 		{
 			var dto = model.GetEntity();

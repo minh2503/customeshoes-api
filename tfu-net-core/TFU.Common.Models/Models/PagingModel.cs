@@ -9,6 +9,7 @@ namespace TFU.Common.Models
         public string Keyword { get; set; }
         public string BrandName { get; set; }
 		public PriceFilter? PriceFilter { get; set; }
+		public OrderStatusFilter? OrderStatus { get; set; }
 		public long ShoesId { get; set; }
 		public string OrderBy { get; set; }
         public string OrderDirection { get; set; }
@@ -28,12 +29,22 @@ namespace TFU.Common.Models
         };
     }
 
-    public enum PriceFilter
-    {
+	#region Filter
+
+	public enum OrderStatusFilter
+	{
+		Pending = 1,
+		Confirmed = 2,
+		Shipped = 3,
+		Delivered = 4,
+		Cancelled = 5
+	}
+	public enum PriceFilter
+	{
 		Under500K = 1,        // Dưới 500.000đ
 		From500KTo1M = 2,     // 500.000đ - 1.000.000đ
 		From1MTo2M = 3,       // 1.000.000đ - 2.000.000đ
-		From2MTo3M =  4,       // 2.000.000đ - 3.000.000đ
+		From2MTo3M = 4,       // 2.000.000đ - 3.000.000đ
 		Above3M = 5,
 	}
 
@@ -59,4 +70,5 @@ namespace TFU.Common.Models
 			}
 		}
 	}
+	#endregion
 }

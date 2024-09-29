@@ -16,5 +16,6 @@ namespace App.DAL.Interfaces
 		Task<App_OrderDTO> GetTheLatestOrder();
 		Task<BaseRepsonse> UpdateOrder(App_OrderDTO dto);
 		Task<List<App_OrderDTO>> GetAllOrders(PagingModel paging);
+		Task<List<App_OrderDTO>> GetAllOrdersByStatus(PagingModel paging);
 	}
 }
