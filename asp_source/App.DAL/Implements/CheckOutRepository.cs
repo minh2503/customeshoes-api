@@ -116,7 +116,6 @@ namespace App.DAL.Implements
 				var order = _dbAppContext.App_Orders.FirstOrDefault(x => x.Id.Equals(dto.Id));
 				if(order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng."};
 				order.Id = dto.Id;
-				order.OrderId = dto.OrderId;
 				order.UserId = dto.UserId;
 				order.Status = dto.Status;
 				order.Note = dto.Note;

@@ -72,7 +72,6 @@ namespace App.BLL.Implements
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
 		{
 			var dto = model.GetEntity();
-			dto.OrderId = await GenerateIncrementalOrderIdAsync();
 			var repsonse = await _checkOutRepository.UpdateOrder(dto);
 			return repsonse;
 		}
