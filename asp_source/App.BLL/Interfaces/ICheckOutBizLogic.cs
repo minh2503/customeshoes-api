@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Interfaces
 {
@@ -13,5 +14,6 @@ namespace App.BLL.Interfaces
 	{
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel);
 		Task<BaseRepsonse> UpdateOrder(OrderModel model);
+		Task<List<OrderModel>> GetAllOrders(PagingModel paging);
 	}
 }

@@ -4,12 +4,9 @@ using App.Entity.DTO;
 using App.Entity.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TFU.Common;
+using TFU.Common.Extension;
+using TFU.Common.Models;
 using TFU.EntityFramework;
 
 namespace App.DAL.Implements
@@ -65,6 +62,13 @@ namespace App.DAL.Implements
 				CancelTransaction();
 				throw;
 			}
+		}
+
+		public async Task<List<App_OrderDTO>> GetAllOrders(PagingModel paging)
+		{
+			var loadeRecords = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
+			paging.TotalRecord = await loadeRecords.CountAsync();
+			return await loadeRecords.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
 
 		public async Task<App_OrderDTO> GetOrderById(long id)

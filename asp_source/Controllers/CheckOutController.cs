@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TFU.APIBased;
 using TFU.BLL.Implements;
 using TFU.BLL.Interfaces;
+using TFU.Common.Models;
 
 namespace tapluyen.api.Controllers
 {
@@ -98,6 +99,23 @@ namespace tapluyen.api.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost]
+		[Route("get-all-orders-by-paging")]
+		public async Task<IActionResult> GetAllOrders([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.GetAllOrders(paging);
+				var result = new PagingDataModel<OrderModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllOrders: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}

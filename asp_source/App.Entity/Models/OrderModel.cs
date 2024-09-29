@@ -44,20 +44,20 @@ namespace App.Entity.Models
 
         public OrderModel(App_OrderDTO dto)
         {
-            dto.Id = Id;
-			dto.UserId = UserId;
-			dto.Status = Status;
-			dto.Note = Note;
-			dto.Amount = Amount;
-			dto.ShipAddress = ShipAddress;
-			dto.ShipedDate = ShipedDate;
-			dto.DeliveredDate = DeliveredDate;
-			dto.PaymentMethod = PaymentMethod;
-			dto.PaymentDate = PaymentDate;
-			dto.OrderId = OrderId;
-			dto.CreatedDate = CreatedDate;
-			dto.ModifyDate = ModifyDate;
-			dto.ModifiedBy = ModifiedBy;
+            Id = dto.Id;
+			UserId = dto.UserId;
+			Status = dto.Status;
+			Note = dto.Note;
+			Amount = dto.Amount;
+			ShipAddress = dto.ShipAddress;
+			ShipedDate = dto.ShipedDate;
+			DeliveredDate = dto.DeliveredDate;
+			PaymentMethod = dto.PaymentMethod;
+			PaymentDate = dto.PaymentDate;
+			CreatedDate = dto.CreatedDate;
+			OrderId = dto.OrderId;
+			ModifyDate = dto.ModifyDate;
+			ModifiedBy = dto.ModifiedBy;
         }
 
 		public App_OrderDTO GetEntity()

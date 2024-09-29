@@ -1,4 +1,5 @@
 ﻿using App.BLL.Interfaces;
+using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.DTO;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TFU.Common.Models;
 
 namespace App.BLL.Implements
 {
@@ -44,6 +46,13 @@ namespace App.BLL.Implements
 			{
 				throw;
 			}
+		}
+
+		public async Task<List<OrderModel>> GetAllOrders(PagingModel paging)
+		{
+			var data = await _checkOutRepository.GetAllOrders(paging);
+			if (!data.Any()) return data.Select(b => new OrderModel()).ToList();
+			return data.Select(x => new OrderModel(x)).ToList();
 		}
 
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
