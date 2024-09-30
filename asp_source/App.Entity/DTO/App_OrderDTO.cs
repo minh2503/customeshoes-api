@@ -14,13 +14,13 @@ namespace App.Entity.DTO
         public string? Note { get; set; }
         public double Amount { get; set; }
         public string? ShipAddress { get; set; }
-        public DateTime ShipedDate { get; set; }
-        public DateTime DeliveredDate { get; set; }
+        public DateTime? ShipedDate { get; set; }
+        public DateTime? DeliveredDate { get; set; }
         public int PaymentMethod { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public string? OrderId { get; set; }
-        public DateTime ModifyDate { get; set; } =  DateTime.Now;
+        public DateTime? PaymentDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? OrderCode { get; set; }
+        public DateTime? ModifyDate { get; set; }
         public string? ModifiedBy { get; set; }
     }
 }

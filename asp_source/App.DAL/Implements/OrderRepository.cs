@@ -38,7 +38,7 @@ namespace App.DAL.Implements
 				PaymentMethod = (int)PaymentMethod.COD,
 				PaymentDate = dto.PaymentDate,
 				CreatedDate = dto.CreatedDate,
-				OrderId = dto.OrderId,
+				OrderCode = dto.OrderCode,
 				ModifyDate = dto.ModifyDate,
 				ModifiedBy = dto.ModifiedBy,
 			};
@@ -54,7 +54,7 @@ namespace App.DAL.Implements
 		public async Task<App_OrderDTO> GetTheLatestOrder()
 		{
 			var lastOrder = await _dbAppContext.App_Orders.AsNoTracking()
-						.OrderByDescending(o => o.OrderId)
+						.OrderByDescending(o => o.OrderCode)
 						.FirstOrDefaultAsync();
 			return lastOrder;
 		}

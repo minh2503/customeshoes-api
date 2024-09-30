@@ -41,12 +41,11 @@ namespace tapluyen.api.Controllers
 			{
 				if (!ModelState.IsValid) return ModelInvalid();
 
-				var user = await _identityBizLogic.GetByIdAsync(UserId);
-				if (user == null)
+				if(!model.IsPaymentMethodValid())
 				{
-					return Error("Không tìm thấy người dùng");
+					ModelState.AddModelError("PaymentMethod", "Phương thức thanh toán không hợp lệ.");
+					return ModelInvalid();
 				}
-				model.UserId = user.Id;
 
 				var existedShoes = await _shoesBizLogic.GetShoes(model.ShoesId);
 				if (existedShoes == null || existedShoes.IsActive == false)
@@ -67,7 +66,7 @@ namespace tapluyen.api.Controllers
 					return ModelInvalid();
 				}
 
-				var response = await _checkOutBizLogic.CheckOutAsync(model, existedShoes);
+				var response = await _checkOutBizLogic.CheckOutAsync(model, existedShoes, UserId);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);
 			}

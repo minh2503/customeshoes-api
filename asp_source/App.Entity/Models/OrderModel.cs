@@ -29,12 +29,12 @@ namespace App.Entity.Models
 		public DateTime? PaymentDate { get; set; }
 
 		[DataType(DataType.Date)]
-		public DateTime CreatedDate { get; set; }
+		public DateTime? CreatedDate { get; set; }
 
-		public string? OrderId { get; set; }
+		public string? OrderCode { get; set; }
 
 		[DataType(DataType.Date)]
-		public DateTime ModifyDate { get; set; }
+		public DateTime? ModifyDate { get; set; }
 		public string? ModifiedBy { get; set; }
 
 		public OrderModel()
@@ -55,7 +55,7 @@ namespace App.Entity.Models
 			PaymentMethod = dto.PaymentMethod;
 			PaymentDate = dto.PaymentDate;
 			CreatedDate = dto.CreatedDate;
-			OrderId = dto.OrderId;
+			OrderCode = dto.OrderCode;
 			ModifyDate = dto.ModifyDate;
 			ModifiedBy = dto.ModifiedBy;
         }
@@ -74,7 +74,7 @@ namespace App.Entity.Models
 				DeliveredDate = (DateTime)DeliveredDate,
 				PaymentMethod = PaymentMethod,
 				PaymentDate = (DateTime)PaymentDate,
-				OrderId = OrderId,
+				OrderCode = OrderCode,
 				CreatedDate = CreatedDate,
 				ModifyDate = ModifyDate,
 				ModifiedBy = ModifiedBy,

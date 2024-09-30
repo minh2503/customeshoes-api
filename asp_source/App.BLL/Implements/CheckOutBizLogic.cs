@@ -27,7 +27,7 @@ namespace App.BLL.Implements
 			this._orderItemsRepository = orderItemsRepository;
 			this._checkOutRepository = checkOutRepository;
 		}
-        public async Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel)
+        public async Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId)
 		{
 			try
 			{
@@ -35,9 +35,10 @@ namespace App.BLL.Implements
 				var orderDetailDTO = model.GetOrderItemsEntity();
 				var shoesDTO = shoesModel.GetEntity();
 
+				orderDTO.UserId = userId;
 				orderDetailDTO.UnitPrice = shoesDTO.Price * orderDetailDTO.Quantity;
 				orderDTO.Amount = orderDetailDTO.UnitPrice;
-				orderDTO.OrderId = await GenerateIncrementalOrderIdAsync();
+				orderDTO.OrderCode = await GenerateIncrementalOrderIdAsync();
 
 				var response = await _checkOutRepository.CheckOutAsync(orderDTO, orderDetailDTO);
 				return response;
@@ -95,7 +96,7 @@ namespace App.BLL.Implements
 
 			if (latestOrder != null)
 			{
-				string lastOrderId = latestOrder.OrderId;
+				string lastOrderId = latestOrder.OrderCode;
 				string numberPart = lastOrderId.Substring(2);
 				if (int.TryParse(numberPart, out int lastNumber))
 				{

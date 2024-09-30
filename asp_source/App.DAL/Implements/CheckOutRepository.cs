@@ -33,12 +33,10 @@ namespace App.DAL.Implements
 					Note = orderDTO.Note,
 					Amount = orderDTO.Amount,
 					ShipAddress = orderDTO.ShipAddress,
-					ShipedDate = orderDTO.ShipedDate,
-					DeliveredDate = orderDTO.DeliveredDate,
 					PaymentMethod = (int)PaymentMethod.COD,
-					PaymentDate = orderDTO.PaymentDate,
-					OrderId = orderDTO.OrderId,
+					OrderCode = orderDTO.OrderCode,
 					ModifiedBy = orderDTO.ModifiedBy,
+					CreatedDate =  DateTime.Now,
 				};
 				_dbAppContext.App_Orders.Add(order);
 				await _dbAppContext.SaveChangesAsync();
@@ -108,7 +106,7 @@ namespace App.DAL.Implements
 		public async Task<App_OrderDTO> GetTheLatestOrder()
 		{
 			var lastOrder = await _dbAppContext.App_Orders.AsNoTracking()
-						.OrderByDescending(o => o.OrderId)
+						.OrderByDescending(o => o.OrderCode)
 						.FirstOrDefaultAsync();
 			return lastOrder;
 		}
