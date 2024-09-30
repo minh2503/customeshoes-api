@@ -54,36 +54,31 @@ namespace App.BLL.Implements
 		public async Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrders(paging);
-			List<OrderDetailModel> response = new List<OrderDetailModel>();
+			var response = new List<OrderDetailModel>();
+
 			foreach (var order in data)
-            {
-				var orderItems = await _checkOutRepository.GetOrderItemsByOrderId(order.Id);
-				List<OrderItemDetailModel> orderItemDetailModels = new List<OrderItemDetailModel>();
-				foreach (var item in orderItems)
-                {
-					var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
-					var shoesModel = new ShoesModel(shoesDTO);
-
-					var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(item.ShoesImageId);
-					var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
-					var orderItemModel = new OrderItemDetailModel(item);
-					orderItemModel.ShoesModel = shoesModel;
-					orderItemModel.ShoesImage = shoesImageModel;
-
-					orderItemDetailModels.Add(orderItemModel);
-				}
-                var orderDetailModel = new OrderDetailModel(order);
-				orderDetailModel.orderItemDetailModels = orderItemDetailModels;
+			{
+				var orderDetailModel = new OrderDetailModel(order);
+				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
 				response.Add(orderDetailModel);
-            }
+			}
+
 			return response;
 		}
 
-		public async Task<List<OrderModel>> GetAllOrdersByKey(PagingModel paging)
+		public async Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrdersByKey(paging);
-			if (!data.Any()) return data.Select(b => new OrderModel()).ToList();
-			return data.Select(x => new OrderModel(x)).ToList();
+			var response = new List<OrderDetailModel>();
+
+			foreach (var order in data)
+			{
+				var orderDetailModel = new OrderDetailModel(order);
+				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
+				response.Add(orderDetailModel);
+			}
+
+			return response;
 		}
 
 		public async Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging)
@@ -98,23 +93,8 @@ namespace App.BLL.Implements
 			var response = await _checkOutRepository.GetOrderById(id);
 			if (response == null) return null;
 
-			var childItems = await _checkOutRepository.GetOrderItemsByOrderId(id);
-			List<OrderItemDetailModel> orderItemDetailModels = new List<OrderItemDetailModel>();
-			foreach (var item in childItems)
-			{
-				var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
-				var shoesModel = new ShoesModel(shoesDTO);
-
-				var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(item.ShoesImageId);
-				var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
-				var orderItemModel = new OrderItemDetailModel(item);
-				orderItemModel.ShoesModel = shoesModel;
-				orderItemModel.ShoesImage = shoesImageModel;
-
-				orderItemDetailModels.Add(orderItemModel);
-			}
 			var model = new OrderDetailModel(response);
-			model.orderItemDetailModels = orderItemDetailModels;
+			model.orderItemDetailModels = await GetOrderItemsDetails(id);
 			return model;
 		}
 
@@ -132,15 +112,7 @@ namespace App.BLL.Implements
 			var response = await _checkOutRepository.GetOrderItemById(id);
 			if (response == null) return null;
 
-			var shoesDTO = await _shoesRepository.GetShoes(response.ShoesId);
-			var shoesModel = new ShoesModel(shoesDTO);
-
-			var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(response.ShoesImageId);
-			var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
-			var model = new OrderItemDetailModel(response);
-			model.ShoesModel = shoesModel;
-			model.ShoesImage = shoesImageModel;
-			return model;
+			return await GetOrderItemDetailModel(response);
 		}
 		#endregion
 
@@ -166,6 +138,39 @@ namespace App.BLL.Implements
 
 			return orderId;
 		}
+
+		private async Task<OrderItemDetailModel> GetOrderItemDetailModel(App_OrderItemsDTO item)
+		{
+			var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
+			var shoesModel = new ShoesModel(shoesDTO);
+
+			var shoesImageDTO = await _shoesImagesRepository.GetShoesImages(item.ShoesImageId);
+			var shoesImageModel = new ShoesImagesModel(shoesImageDTO);
+
+			var orderItemModel = new OrderItemDetailModel(item)
+			{
+				ShoesModel = shoesModel,
+				ShoesImage = shoesImageModel
+			};
+
+			return orderItemModel;
+		}
+
+		private async Task<List<OrderItemDetailModel>> GetOrderItemsDetails(long orderId)
+		{
+			var orderItems = await _checkOutRepository.GetOrderItemsByOrderId(orderId);
+			var orderItemDetailModels = new List<OrderItemDetailModel>();
+
+			foreach (var item in orderItems)
+			{
+				var orderItemModel = await GetOrderItemDetailModel(item);
+				orderItemDetailModels.Add(orderItemModel);
+			}
+
+			return orderItemDetailModels;
+		}
+
+
 		#endregion
 	}
 }

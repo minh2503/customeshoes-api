@@ -147,13 +147,13 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("get-all-orders-by-userId")]
+		[Route("filter-all-orders-by-key")]
 		public async Task<IActionResult> GetAllOrdersByKey([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _checkOutBizLogic.GetAllOrdersByKey(paging);
-				var result = new PagingDataModel<OrderModel>(data, paging);
+				var result = new PagingDataModel<OrderDetailModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)
