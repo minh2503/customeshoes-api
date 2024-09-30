@@ -134,6 +134,10 @@ namespace App.DAL.Implements
 			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
 		}
 
+		public async Task<App_OrderDTO> GetOrderByCode(string orderCode)
+		{
+			return await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.OrderCode.Equals(orderCode));
+		}
 		#endregion
 
 		#region OrderItem

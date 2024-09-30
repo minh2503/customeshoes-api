@@ -21,6 +21,7 @@ namespace App.BLL.Interfaces
 		Task<List<OrderDetailModel>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging);
 		Task<OrderDetailModel> GetOrderById(long id);
+		Task<OrderDetailModel> GetOrderByCode(string orderCode);
 		#endregion
 
 		#region OrderItem

@@ -183,5 +183,22 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpGet]
+		[Route("get-order-by-code/{code}")]
+		public async Task<IActionResult> GetOrderByCode([FromRoute] string code)
+		{
+			try
+			{
+				var repsonse = await _checkOutBizLogic.GetOrderByCode(code);
+				if (repsonse == null) return GetError("Đơn hàng không tồn tại.");
+				return GetSuccess(repsonse);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetOrderByCode: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }

@@ -83,6 +83,16 @@ namespace App.BLL.Implements
 			return model;
 		}
 
+		public async Task<OrderDetailModel> GetOrderByCode(string orderCode)
+		{
+			var response = await _checkOutRepository.GetOrderByCode(orderCode);
+			if (response == null) return null;
+
+			var model = new OrderDetailModel(response);
+			model.orderItemDetailModels = await GetOrderItemsDetails(model.Id);
+			return model;
+		}
+
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
 		{
 			var dto = model.GetEntity();
