@@ -130,13 +130,15 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("get-all-orders-by-status")]
+		[Route("filter-all-orders-by-status")]
 		public async Task<IActionResult> GetAllOrdersByStatus([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _checkOutBizLogic.GetAllOrdersByStatus(paging);
-				var result = new PagingDataModel<OrderModel>(data, paging);
+				if (data == null) return GetError();
+				if (!data.Any()) return GetSuccess("Chưa có đơn order nào.");
+				var result = new PagingDataModel<OrderDetailModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)
@@ -153,6 +155,8 @@ namespace tapluyen.api.Controllers
 			try
 			{
 				var data = await _checkOutBizLogic.GetAllOrdersByKey(paging);
+				if (data == null) return GetError();
+				if (!data.Any()) return GetSuccess("Chưa có đơn order nào.");
 				var result = new PagingDataModel<OrderDetailModel>(data, paging);
 				return GetSuccess(result);
 			}

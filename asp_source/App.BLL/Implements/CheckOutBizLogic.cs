@@ -4,6 +4,7 @@ using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.DTO;
 using App.Entity.Models;
+using App.Entity.Models.OpenPlatform;
 using App.Entity.Models.Orders;
 using System;
 using System.Collections.Generic;
@@ -54,38 +55,22 @@ namespace App.BLL.Implements
 		public async Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrders(paging);
-			var response = new List<OrderDetailModel>();
-
-			foreach (var order in data)
-			{
-				var orderDetailModel = new OrderDetailModel(order);
-				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
-				response.Add(orderDetailModel);
-			}
-
+			var response = await GetOrderDetails(data);
 			return response;
 		}
 
 		public async Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrdersByKey(paging);
-			var response = new List<OrderDetailModel>();
-
-			foreach (var order in data)
-			{
-				var orderDetailModel = new OrderDetailModel(order);
-				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
-				response.Add(orderDetailModel);
-			}
-
+			var response = await GetOrderDetails(data);
 			return response;
 		}
 
-		public async Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging)
+		public async Task<List<OrderDetailModel>> GetAllOrdersByStatus(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrdersByStatus(paging);
-			if (!data.Any()) return data.Select(b => new OrderModel()).ToList();
-			return data.Select(x => new OrderModel(x)).ToList();
+			var response = await GetOrderDetails(data);
+			return response;
 		}
 
 		public async Task<OrderDetailModel> GetOrderById(long id)
@@ -168,6 +153,20 @@ namespace App.BLL.Implements
 			}
 
 			return orderItemDetailModels;
+		}
+
+		private async Task<List<OrderDetailModel>> GetOrderDetails(List<App_OrderDTO> orderDTO)
+		{
+			var response = new List<OrderDetailModel>();
+
+			foreach (var order in orderDTO)
+			{
+				var orderDetailModel = new OrderDetailModel(order);
+				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
+				response.Add(orderDetailModel);
+			}
+
+			return response;
 		}
 
 

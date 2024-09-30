@@ -14,10 +14,11 @@ namespace App.BLL.Interfaces
     public interface ICheckOutBizLogic
 	{
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId);
+
 		#region Order
 		Task<BaseRepsonse> UpdateOrder(OrderModel model);
 		Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging);
-		Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging);
+		Task<List<OrderDetailModel>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging);
 		Task<OrderDetailModel> GetOrderById(long id);
 		#endregion
