@@ -16,7 +16,7 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId);
 		#region Order
 		Task<BaseRepsonse> UpdateOrder(OrderModel model);
-		Task<List<OrderModel>> GetAllOrders(PagingModel paging);
+		Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging);
 		Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<OrderModel>> GetAllOrdersByKey(PagingModel paging);
 		Task<OrderDetailModel> GetOrderById(long id);

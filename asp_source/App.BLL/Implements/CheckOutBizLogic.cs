@@ -51,11 +51,32 @@ namespace App.BLL.Implements
 		}
 
 		#region Order
-		public async Task<List<OrderModel>> GetAllOrders(PagingModel paging)
+		public async Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrders(paging);
-			if (!data.Any()) return data.Select(b => new OrderModel()).ToList();
-			return data.Select(x => new OrderModel(x)).ToList();
+			List<OrderDetailModel> response = new List<OrderDetailModel>();
+			foreach (var order in data)
+            {
+				var orderItems = await _checkOutRepository.GetOrderItemsByOrderId(order.Id);
+				List<OrderItemDetailModel> orderItemDetailModels = new List<OrderItemDetailModel>();
+				foreach (var item in orderItems)
+                {
+					var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
+					var shoesModel = new ShoesModel(shoesDTO);
+
+					var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(item.ShoesImageId);
+					var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
+					var orderItemModel = new OrderItemDetailModel(item);
+					orderItemModel.ShoesModel = shoesModel;
+					orderItemModel.ShoesImage = shoesImageModel;
+
+					orderItemDetailModels.Add(orderItemModel);
+				}
+                var orderDetailModel = new OrderDetailModel(order);
+				orderDetailModel.orderItemDetailModels = orderItemDetailModels;
+				response.Add(orderDetailModel);
+            }
+			return response;
 		}
 
 		public async Task<List<OrderModel>> GetAllOrdersByKey(PagingModel paging)
@@ -81,8 +102,16 @@ namespace App.BLL.Implements
 			List<OrderItemDetailModel> orderItemDetailModels = new List<OrderItemDetailModel>();
 			foreach (var item in childItems)
 			{
-				var itemModel = await GetOrderItemById(item.Id);
-				orderItemDetailModels.Add(itemModel);
+				var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
+				var shoesModel = new ShoesModel(shoesDTO);
+
+				var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(item.ShoesImageId);
+				var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
+				var orderItemModel = new OrderItemDetailModel(item);
+				orderItemModel.ShoesModel = shoesModel;
+				orderItemModel.ShoesImage = shoesImageModel;
+
+				orderItemDetailModels.Add(orderItemModel);
 			}
 			var model = new OrderDetailModel(response);
 			model.orderItemDetailModels = orderItemDetailModels;

@@ -111,13 +111,15 @@ namespace tapluyen.api.Controllers
 		//}
 
 		[HttpPost]
-		[Route("get-all-orders-by-paging")]
+		[Route("get-all-orders")]
 		public async Task<IActionResult> GetAllOrders([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _checkOutBizLogic.GetAllOrders(paging);
-				var result = new PagingDataModel<OrderModel>(data, paging);
+				if (data == null) return GetError();
+				if(!data.Any()) return GetSuccess("Chưa có đơn order nào.");
+				var result = new PagingDataModel<OrderDetailModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)
