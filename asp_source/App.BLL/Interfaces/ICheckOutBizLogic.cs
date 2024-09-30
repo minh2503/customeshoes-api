@@ -17,5 +17,6 @@ namespace App.BLL.Interfaces
 		Task<List<OrderModel>> GetAllOrders(PagingModel paging);
 		Task<List<OrderModel>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<OrderModel>> GetAllOrdersByKey(PagingModel paging);
+		Task<OrderModel> GetOrdersById(long id);
 	}
 }

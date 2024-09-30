@@ -2,6 +2,7 @@
 using App.Entity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TFU.APIBased;
 using TFU.BLL.Implements;
@@ -77,9 +78,9 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		[HttpPost]
-		[Route("update-order")]
-		public async Task<IActionResult> UpdateOrder(OrderModel model)
+		[HttpPatch]
+		[Route("update-order/{id}")]
+		public async Task<IActionResult> UpdateOrder(long id, JsonPatchDocument<OrderModel> model)
 		{
 			try
 			{
@@ -90,9 +91,15 @@ namespace tapluyen.api.Controllers
 				{
 					return Error("Không tìm thấy người dùng");
 				}
-				model.ModifiedBy = user.UserName;
 
-				var response = await _checkOutBizLogic.UpdateOrder(model);
+				var order = await _checkOutBizLogic.GetOrdersById(id);
+				if(order == null)
+				{
+					return GetError("Không tìm thấy order.");
+				}
+				model.ApplyTo(order, ModelState);
+
+				var response = await _checkOutBizLogic.UpdateOrder(order);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);
 			}

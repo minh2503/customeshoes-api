@@ -18,5 +18,6 @@ namespace App.DAL.Interfaces
 		Task<List<App_OrderDTO>> GetAllOrders(PagingModel paging);
 		Task<List<App_OrderDTO>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging);
+		Task<App_OrderDTO> GetOrdersById(long id);
 	}
 }

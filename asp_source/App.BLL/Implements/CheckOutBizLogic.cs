@@ -69,6 +69,13 @@ namespace App.BLL.Implements
 			return data.Select(x => new OrderModel(x)).ToList();
 		}
 
+		public async Task<OrderModel> GetOrdersById(long id)
+		{
+			var response = await _checkOutRepository.GetOrdersById(id);
+			if (response == null) return null;
+			return new OrderModel(response);
+		}
+
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
 		{
 			var dto = model.GetEntity();

@@ -19,14 +19,14 @@ namespace App.Entity.Models
 		public string? ShipAddress { get; set; 
 		}
 		[DataType(DataType.Date)]
-		public DateTime ShipedDate { get; set; }
+		public DateTime? ShipedDate { get; set; }
 
 		[DataType(DataType.Date)]
-		public DateTime DeliveredDate { get; set; }
+		public DateTime? DeliveredDate { get; set; }
 
 		public int PaymentMethod { get; set; }
 		[DataType(DataType.Date)]
-		public DateTime PaymentDate { get; set; }
+		public DateTime? PaymentDate { get; set; }
 
 		[DataType(DataType.Date)]
 		public DateTime CreatedDate { get; set; }
@@ -70,10 +70,10 @@ namespace App.Entity.Models
 				Note = Note,
 				Amount = Amount,
 				ShipAddress = ShipAddress,
-				ShipedDate = ShipedDate,
-				DeliveredDate = DeliveredDate,
+				ShipedDate = (DateTime)ShipedDate,
+				DeliveredDate = (DateTime)DeliveredDate,
 				PaymentMethod = PaymentMethod,
-				PaymentDate = PaymentDate,
+				PaymentDate = (DateTime)PaymentDate,
 				OrderId = OrderId,
 				CreatedDate = CreatedDate,
 				ModifyDate = ModifyDate,

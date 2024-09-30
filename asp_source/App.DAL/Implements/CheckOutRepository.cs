@@ -100,6 +100,11 @@ namespace App.DAL.Implements
 			return await _dbAppContext.App_Orders.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
 		}
 
+		public async Task<App_OrderDTO> GetOrdersById(long id)
+		{
+			return await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.Id.Equals(id));
+		}
+
 		public async Task<App_OrderDTO> GetTheLatestOrder()
 		{
 			var lastOrder = await _dbAppContext.App_Orders.AsNoTracking()
