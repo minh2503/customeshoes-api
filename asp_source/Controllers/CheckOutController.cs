@@ -1,5 +1,6 @@
 ﻿using App.BLL.Interfaces;
 using App.Entity.Models;
+using App.Entity.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -11,7 +12,7 @@ using TFU.Common.Models;
 
 namespace tapluyen.api.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	[Authorize]
 	public class CheckOutController : BaseAPIController
@@ -77,37 +78,37 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		[HttpPatch]
-		[Route("update-order/{id}")]
-		public async Task<IActionResult> UpdateOrder(long id, JsonPatchDocument<OrderModel> model)
-		{
-			try
-			{
-				if (!ModelState.IsValid) return ModelInvalid();
+		//[HttpPatch]
+		//[Route("update-order/{id}")]
+		//public async Task<IActionResult> UpdateOrder(long id, JsonPatchDocument<OrderModel> model)
+		//{
+		//	try
+		//	{
+		//		if (!ModelState.IsValid) return ModelInvalid();
 
-				var user = await _identityBizLogic.GetByIdAsync(UserId);
-				if (user == null)
-				{
-					return Error("Không tìm thấy người dùng");
-				}
+		//		var user = await _identityBizLogic.GetByIdAsync(UserId);
+		//		if (user == null)
+		//		{
+		//			return Error("Không tìm thấy người dùng");
+		//		}
 
-				var order = await _checkOutBizLogic.GetOrdersById(id);
-				if(order == null)
-				{
-					return GetError("Không tìm thấy order.");
-				}
-				model.ApplyTo(order, ModelState);
+		//		var order = await _checkOutBizLogic.GetOrderById(id);
+		//		if(order == null)
+		//		{
+		//			return GetError("Không tìm thấy order.");
+		//		}
+		//		model.ApplyTo(order, ModelState);
 
-				var response = await _checkOutBizLogic.UpdateOrder(order);
-				if (!response.IsSuccess) return SaveError(response.Message);
-				return SaveSuccess(response);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
-				return SaveError(ex.Message);
-			}
-		}
+		//		var response = await _checkOutBizLogic.UpdateOrder(order);
+		//		if (!response.IsSuccess) return SaveError(response.Message);
+		//		return SaveSuccess(response);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
+		//		return SaveError(ex.Message);
+		//	}
+		//}
 
 		[HttpPost]
 		[Route("get-all-orders-by-paging")]
@@ -156,6 +157,23 @@ namespace tapluyen.api.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError("GetAllOrdersByKey: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpGet]
+		[Route("get-order-by-id/{id}")]
+		public async Task<IActionResult> GetOrderById([FromRoute]long id)
+		{
+			try
+			{
+				var repsonse = await _checkOutBizLogic.GetOrderById(id);
+				if (repsonse == null) return GetError("Đơn hàng không tồn tại.");
+				return GetSuccess(repsonse);
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError("GetOrderById: {0} {1}", ex.Message, ex.StackTrace);
 				return SaveError(ex.Message);
 			}
 		}

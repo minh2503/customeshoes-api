@@ -7,16 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using TFU.Common;
 
-namespace App.Entity.Models
+namespace App.Entity.Models.Orders
 {
-	public class OrderModel :IEntity<App_OrderDTO>
+	public class OrderDetailModel
 	{
 		public long Id { get; set; }
 		public long UserId { get; set; }
 		public int Status { get; set; }
 		public string? Note { get; set; }
 		public double Amount { get; set; } = 0;
-		public string? ShipAddress { get; set; 
+		public string? ShipAddress
+		{
+			get; set;
 		}
 		[DataType(DataType.Date)]
 		public DateTime? ShipedDate { get; set; }
@@ -37,14 +39,11 @@ namespace App.Entity.Models
 		public DateTime? ModifyDate { get; set; }
 		public string? ModifiedBy { get; set; }
 
-		public OrderModel()
-        {
-            
-        }
+		public List<OrderItemDetailModel> orderItemDetailModels { get; set; }
 
-        public OrderModel(App_OrderDTO dto)
-        {
-            Id = dto.Id;
+		public OrderDetailModel(App_OrderDTO dto)
+		{
+			Id = dto.Id;
 			UserId = dto.UserId;
 			Status = dto.Status;
 			Note = dto.Note;
@@ -58,27 +57,7 @@ namespace App.Entity.Models
 			OrderCode = dto.OrderCode;
 			ModifyDate = dto.ModifyDate;
 			ModifiedBy = dto.ModifiedBy;
-        }
-
-		public App_OrderDTO GetEntity()
-		{
-			return new App_OrderDTO
-			{
-				Id = Id,
-				UserId = UserId,
-				Status = Status,
-				Note = Note,
-				Amount = Amount,
-				ShipAddress = ShipAddress,
-				ShipedDate = (DateTime)ShipedDate,
-				DeliveredDate = (DateTime)DeliveredDate,
-				PaymentMethod = PaymentMethod,
-				PaymentDate = (DateTime)PaymentDate,
-				OrderCode = OrderCode,
-				CreatedDate = CreatedDate,
-				ModifyDate = ModifyDate,
-				ModifiedBy = ModifiedBy,
-			};
+			orderItemDetailModels = new List<OrderItemDetailModel>();
 		}
 	}
 }

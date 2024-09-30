@@ -62,6 +62,7 @@ namespace App.DAL.Implements
 			}
 		}
 
+		#region Order
 		public async Task<List<App_OrderDTO>> GetAllOrders(PagingModel paging)
 		{
 			var loadeRecords = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
@@ -72,7 +73,7 @@ namespace App.DAL.Implements
 		public async Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
-			if(!string.IsNullOrEmpty(paging.Keyword))
+			if (!string.IsNullOrEmpty(paging.Keyword))
 			{
 				long userId;
 				long.TryParse(paging.Keyword, out userId);
@@ -85,7 +86,7 @@ namespace App.DAL.Implements
 		public async Task<List<App_OrderDTO>> GetAllOrdersByStatus(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
-			if(paging.OrderStatus.HasValue)
+			if (paging.OrderStatus.HasValue)
 			{
 				loadedRecord = loadedRecord.Where(x => x.Status == (int)paging.OrderStatus);
 			}
@@ -96,11 +97,6 @@ namespace App.DAL.Implements
 		public async Task<App_OrderDTO> GetOrderById(long id)
 		{
 			return await _dbAppContext.App_Orders.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
-		}
-
-		public async Task<App_OrderDTO> GetOrdersById(long id)
-		{
-			return await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.Id.Equals(id));
 		}
 
 		public async Task<App_OrderDTO> GetTheLatestOrder()
@@ -114,10 +110,10 @@ namespace App.DAL.Implements
 		public async Task<BaseRepsonse> UpdateOrder(App_OrderDTO dto)
 		{
 			var any = await _dbAppContext.App_Orders.AnyAsync(x => x.Id.Equals(dto.Id));
-			if(any)
+			if (any)
 			{
 				var order = _dbAppContext.App_Orders.FirstOrDefault(x => x.Id.Equals(dto.Id));
-				if(order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng."};
+				if (order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng." };
 				order.Id = dto.Id;
 				order.UserId = dto.UserId;
 				order.Status = dto.Status;
@@ -135,7 +131,21 @@ namespace App.DAL.Implements
 				return await SaveAsync();
 			}
 
-			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed};
+			return new BaseRepsonse { IsSuccess = false, Message = Constants.SaveDataFailed };
 		}
+
+		#endregion
+
+		#region OrderItem
+		public async Task<App_OrderItemsDTO> GetOrderItemById(long id)
+		{
+			return await _dbAppContext.App_OrderItems.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
+		}
+
+		public async Task<List<App_OrderItemsDTO>> GetOrderItemsByOrderId(long id)
+		{
+			return await _dbAppContext.App_OrderItems.AsNoTracking().Where(x => x.OrderId.Equals(id)).ToListAsync();
+		}
+		#endregion
 	}
 }

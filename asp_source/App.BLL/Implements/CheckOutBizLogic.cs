@@ -4,6 +4,7 @@ using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.DTO;
 using App.Entity.Models;
+using App.Entity.Models.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +14,18 @@ using TFU.Common.Models;
 
 namespace App.BLL.Implements
 {
-	public class CheckOutBizLogic : ICheckOutBizLogic
+    public class CheckOutBizLogic : ICheckOutBizLogic
 	{
-		private readonly IOrderRepository _orderRepository;
-		private readonly IOrderItemsRepository _orderItemsRepository;
+		private readonly IShoesRepository _shoesRepository;
+		private readonly IShoesImagesRepository _shoesImagesRepository;
 		private readonly ICheckOutRepository _checkOutRepository;
 
-		public CheckOutBizLogic(IOrderRepository orderRepository,
-								IOrderItemsRepository orderItemsRepository,
+		public CheckOutBizLogic(IShoesRepository shoesRepository,
+								IShoesImagesRepository shoesImagesRepository,
 								ICheckOutRepository checkOutRepository)
         {
-			this._orderRepository = orderRepository;
-			this._orderItemsRepository = orderItemsRepository;
+			this._shoesRepository = shoesRepository;
+			this._shoesImagesRepository = shoesImagesRepository;
 			this._checkOutRepository = checkOutRepository;
 		}
         public async Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId)
@@ -49,6 +50,7 @@ namespace App.BLL.Implements
 			}
 		}
 
+		#region Order
 		public async Task<List<OrderModel>> GetAllOrders(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrders(paging);
@@ -70,11 +72,21 @@ namespace App.BLL.Implements
 			return data.Select(x => new OrderModel(x)).ToList();
 		}
 
-		public async Task<OrderModel> GetOrdersById(long id)
+		public async Task<OrderDetailModel> GetOrderById(long id)
 		{
-			var response = await _checkOutRepository.GetOrdersById(id);
+			var response = await _checkOutRepository.GetOrderById(id);
 			if (response == null) return null;
-			return new OrderModel(response);
+
+			var childItems = await _checkOutRepository.GetOrderItemsByOrderId(id);
+			List<OrderItemDetailModel> orderItemDetailModels = new List<OrderItemDetailModel>();
+			foreach (var item in childItems)
+			{
+				var itemModel = await GetOrderItemById(item.Id);
+				orderItemDetailModels.Add(itemModel);
+			}
+			var model = new OrderDetailModel(response);
+			model.orderItemDetailModels = orderItemDetailModels;
+			return model;
 		}
 
 		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
@@ -83,8 +95,25 @@ namespace App.BLL.Implements
 			var repsonse = await _checkOutRepository.UpdateOrder(dto);
 			return repsonse;
 		}
+		#endregion
 
+		#region OrderItem
+		public async Task<OrderItemDetailModel> GetOrderItemById(long id)
+		{
+			var response = await _checkOutRepository.GetOrderItemById(id);
+			if (response == null) return null;
 
+			var shoesDTO = await _shoesRepository.GetShoes(response.ShoesId);
+			var shoesModel = new ShoesModel(shoesDTO);
+
+			var shoesImageDTo = await _shoesImagesRepository.GetShoesImages(response.ShoesImageId);
+			var shoesImageModel = new ShoesImagesModel(shoesImageDTo);
+			var model = new OrderItemDetailModel(response);
+			model.ShoesModel = shoesModel;
+			model.ShoesImage = shoesImageModel;
+			return model;
+		}
+		#endregion
 
 		#region Private
 		private async Task<string> GenerateIncrementalOrderIdAsync()
@@ -92,7 +121,7 @@ namespace App.BLL.Implements
 			string prefix = "G-";
 			int nextNumber = 0;
 
-			var latestOrder = await _orderRepository.GetTheLatestOrder();
+			var latestOrder = await _checkOutRepository.GetTheLatestOrder();
 
 			if (latestOrder != null)
 			{
