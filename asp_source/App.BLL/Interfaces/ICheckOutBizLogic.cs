@@ -16,17 +16,17 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId);
 
 		#region Order
-		Task<BaseRepsonse> UpdateOrder(OrderModel model);
+		Task<BaseRepsonse> UpdateOrder(OrderUpdateModel model, string userName);
 		Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging);
 		Task<List<OrderDetailModel>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging);
 		Task<OrderDetailModel> GetOrderById(long id);
 		Task<OrderDetailModel> GetOrderByCode(string orderCode);
-		Task<BaseRepsonse> CreateOrderItem(OrderItemCreateModel model, ShoesModel shoesModel);
 		#endregion
 
 		#region OrderItem
 		Task<OrderItemDetailModel> GetOrderItemById(long id);
+		Task<BaseRepsonse> CreateOrderItem(OrderItemCreateModel model, ShoesModel shoesModel);
 		#endregion
 	}
 }

@@ -13,9 +13,9 @@ namespace App.Entity.Models.Orders
 	{
 		public long Id { get; set; }
 		public long UserId { get; set; }
-		public int Status { get; set; }
+		public int? Status { get; set; }
 		public string? Note { get; set; }
-		public double Amount { get; set; } = 0;
+		public double? Amount { get; set; }
 		public string? ShipAddress
 		{
 			get; set;
@@ -26,7 +26,7 @@ namespace App.Entity.Models.Orders
 		[DataType(DataType.Date)]
 		public DateTime? DeliveredDate { get; set; }
 
-		public int PaymentMethod { get; set; }
+		public int? PaymentMethod { get; set; }
 		[DataType(DataType.Date)]
 		public DateTime? PaymentDate { get; set; }
 

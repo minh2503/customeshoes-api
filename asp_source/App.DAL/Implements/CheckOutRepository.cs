@@ -114,18 +114,21 @@ namespace App.DAL.Implements
 			{
 				var order = _dbAppContext.App_Orders.FirstOrDefault(x => x.Id.Equals(dto.Id));
 				if (order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng." };
-				order.Id = dto.Id;
-				order.UserId = dto.UserId;
+
+				switch(dto.Status)
+				{
+					case 2: order.PaymentDate = DateTime.Now; break;
+					case 3: order.ShipedDate = DateTime.Now; break;
+					case 4: order.DeliveredDate = DateTime.Now; break;
+					default: break;
+				}
+
 				order.Status = dto.Status;
 				order.Note = dto.Note;
 				order.Amount = dto.Amount;
 				order.ShipAddress = dto.ShipAddress;
-				order.ShipedDate = dto.ShipedDate;
-				order.DeliveredDate = dto.DeliveredDate;
 				order.PaymentMethod = dto.PaymentMethod;
-				order.PaymentDate = dto.PaymentDate;
-				order.CreatedDate = dto.CreatedDate;
-				order.ModifyDate = dto.ModifyDate;
+				order.ModifyDate = DateTime.Now;
 				order.ModifiedBy = dto.ModifiedBy;
 				_dbAppContext.App_Orders.Update(order);
 				return await SaveAsync();

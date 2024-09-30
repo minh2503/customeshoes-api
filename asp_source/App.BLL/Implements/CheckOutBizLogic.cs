@@ -93,9 +93,10 @@ namespace App.BLL.Implements
 			return model;
 		}
 
-		public async Task<BaseRepsonse> UpdateOrder(OrderModel model)
+		public async Task<BaseRepsonse> UpdateOrder(OrderUpdateModel model, string userName)
 		{
 			var dto = model.GetEntity();
+			dto.ModifiedBy = userName;
 			var repsonse = await _checkOutRepository.UpdateOrder(dto);
 			return repsonse;
 		}

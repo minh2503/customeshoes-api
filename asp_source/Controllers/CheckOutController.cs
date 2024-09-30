@@ -78,37 +78,24 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		//[HttpPatch]
-		//[Route("update-order/{id}")]
-		//public async Task<IActionResult> UpdateOrder(long id, JsonPatchDocument<OrderModel> model)
-		//{
-		//	try
-		//	{
-		//		if (!ModelState.IsValid) return ModelInvalid();
+		[HttpPut]
+		[Route("update-order")]
+		public async Task<IActionResult> UpdateOrder(OrderUpdateModel model)
+		{
+			try
+			{
+				if (!ModelState.IsValid) return ModelInvalid();
 
-		//		var user = await _identityBizLogic.GetByIdAsync(UserId);
-		//		if (user == null)
-		//		{
-		//			return Error("Không tìm thấy người dùng");
-		//		}
-
-		//		var order = await _checkOutBizLogic.GetOrderById(id);
-		//		if(order == null)
-		//		{
-		//			return GetError("Không tìm thấy order.");
-		//		}
-		//		model.ApplyTo(order, ModelState);
-
-		//		var response = await _checkOutBizLogic.UpdateOrder(order);
-		//		if (!response.IsSuccess) return SaveError(response.Message);
-		//		return SaveSuccess(response);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
-		//		return SaveError(ex.Message);
-		//	}
-		//}
+				var response = await _checkOutBizLogic.UpdateOrder(model, UserName);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 
 		[HttpPost]
 		[Route("get-all-orders")]
@@ -243,5 +230,6 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
 	}
 }
