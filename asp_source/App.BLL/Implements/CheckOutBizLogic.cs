@@ -99,6 +99,7 @@ namespace App.BLL.Implements
 			var repsonse = await _checkOutRepository.UpdateOrder(dto);
 			return repsonse;
 		}
+
 		#endregion
 
 		#region OrderItem
@@ -108,6 +109,28 @@ namespace App.BLL.Implements
 			if (response == null) return null;
 
 			return await GetOrderItemDetailModel(response);
+		}
+
+		public async Task<BaseRepsonse> CreateOrderItem(OrderItemCreateModel model, ShoesModel shoesModel)
+		{
+			try
+			{
+				var order = await _checkOutRepository.GetOrderById(model.OrderId);
+				if (order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng" };
+
+				var orderItem = model.GetEntity();
+				var shoes = shoesModel.GetEntity();
+
+				orderItem.UnitPrice = shoes.Price * orderItem.Quantity;
+				order.Amount += orderItem.UnitPrice;
+
+				var response = await _checkOutRepository.CreateOrderItem(orderItem, order);
+				return response;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 		#endregion
 

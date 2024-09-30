@@ -38,7 +38,7 @@ namespace App.DAL.Implements
 					ModifiedBy = orderDTO.ModifiedBy,
 					CreatedDate =  DateTime.Now,
 				};
-				_dbAppContext.App_Orders.Add(order);
+				await _dbAppContext.App_Orders.AddAsync(order);
 				await _dbAppContext.SaveChangesAsync();
 
 				var item = new App_OrderItemsDTO
@@ -149,6 +149,34 @@ namespace App.DAL.Implements
 		public async Task<List<App_OrderItemsDTO>> GetOrderItemsByOrderId(long id)
 		{
 			return await _dbAppContext.App_OrderItems.AsNoTracking().Where(x => x.OrderId.Equals(id)).ToListAsync();
+		}
+
+		public async Task<BaseRepsonse> CreateOrderItem(App_OrderItemsDTO orderItemDTO, App_OrderDTO orderDTO)
+		{
+			try
+			{
+				BeginTransaction();
+				var orderItem = new App_OrderItemsDTO
+				{
+					Id = orderItemDTO.Id,
+					Quantity = orderItemDTO.Quantity,
+					UnitPrice = orderItemDTO.UnitPrice,
+					ShoesId = orderItemDTO.ShoesId,
+					ShoesImageId = orderItemDTO.ShoesImageId,
+					OrderId = orderItemDTO.OrderId,
+				};
+				await _dbAppContext.App_OrderItems.AddAsync(orderItemDTO);
+				_dbAppContext.App_Orders.Update(orderDTO);
+
+				var saver = await SaveAsync();
+				EndTransaction();
+				return saver;
+			}
+			catch (Exception)
+			{
+				CancelTransaction();
+				throw;
+			}
 		}
 		#endregion
 	}

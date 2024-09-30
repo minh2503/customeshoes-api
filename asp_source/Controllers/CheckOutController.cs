@@ -200,5 +200,48 @@ namespace tapluyen.api.Controllers
 				return SaveError(ex.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("add-item-to-order")]
+		public async Task<IActionResult> AddItemToOrder([FromBody] OrderItemCreateModel model)
+		{
+			try
+			{
+				if(!ModelState.IsValid) return ModelInvalid();
+
+				var existedShoes = await _shoesBizLogic.GetShoes(model.ShoesId);
+				if (existedShoes == null || existedShoes.IsActive == false)
+				{
+					ModelState.AddModelError("ShoesId", "Giày không khả dụng.");
+					return ModelInvalid();
+				}
+
+				var existedImage = await _shoesImagesBizLogic.GetShoesImages(model.ShoesImageId);
+				if(existedImage == null)
+				{
+					ModelState.AddModelError("ShoesImageId", "Ảnh không tồn tại.");
+					return ModelInvalid();
+				}
+				if (!existedImage.ShoesId.Equals(model.ShoesId))
+				{
+					ModelState.AddModelError("ShoesImageId", "Ảnh không khớp với giày.");
+					return ModelInvalid();
+				}
+				if (existedImage.IsUserCustom == false)
+				{
+					ModelState.AddModelError("ShoesImageId", "Ảnh không phải do người dùng custom.");
+					return ModelInvalid();
+				}
+
+				var response = await _checkOutBizLogic.CreateOrderItem(model, existedShoes);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError("AddItemToOrder: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
 	}
 }

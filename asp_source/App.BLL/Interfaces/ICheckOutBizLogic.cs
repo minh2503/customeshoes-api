@@ -22,6 +22,7 @@ namespace App.BLL.Interfaces
 		Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging);
 		Task<OrderDetailModel> GetOrderById(long id);
 		Task<OrderDetailModel> GetOrderByCode(string orderCode);
+		Task<BaseRepsonse> CreateOrderItem(OrderItemCreateModel model, ShoesModel shoesModel);
 		#endregion
 
 		#region OrderItem
