@@ -231,5 +231,23 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[HttpDelete]
+		[Route("delete-order-item-from-order/{id}")]
+		public async Task<IActionResult> DeleteOrderItem(long id)
+		{
+			try
+			{
+				
+				var response = await _checkOutBizLogic.DeleteOrderItem(id);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("DeleteOrderItem: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
 	}
 }

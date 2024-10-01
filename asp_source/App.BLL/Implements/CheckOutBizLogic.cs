@@ -133,6 +133,23 @@ namespace App.BLL.Implements
 				throw;
 			}
 		}
+
+		public async Task<BaseRepsonse> DeleteOrderItem(long id)
+		{
+			try
+			{
+				var orderItem = await _checkOutRepository.GetOrderItemById(id);
+				var order = await _checkOutRepository.GetOrderById(orderItem.OrderId);
+
+				order.Amount -= orderItem.UnitPrice;
+				var response = await _checkOutRepository.DeleteOrderItem(orderItem, order);
+				return response;
+			}
+			catch(Exception)
+			{
+				throw;
+			}
+		}
 		#endregion
 
 		#region Private
@@ -202,8 +219,6 @@ namespace App.BLL.Implements
 
 			return response;
 		}
-
-
 		#endregion
 	}
 }
