@@ -249,5 +249,24 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[HttpPut]
+		[Route("update-order-item/{id}")]
+		public async Task<IActionResult> UpdateOrderItem([FromRoute]long id, [FromBody] OrderItemUpdateModel model)
+		{
+			try
+			{
+				if (!ModelState.IsValid) return ModelInvalid();
+
+				var response = await _checkOutBizLogic.UpdateOrderItem(id, model);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
 	}
 }

@@ -28,6 +28,7 @@ namespace App.BLL.Interfaces
 		Task<OrderItemDetailModel> GetOrderItemById(long id);
 		Task<BaseRepsonse> CreateOrderItem(OrderItemCreateModel model, ShoesModel shoesModel);
 		Task<BaseRepsonse> DeleteOrderItem(long id);
+		Task<BaseRepsonse> UpdateOrderItem(long id, OrderItemUpdateModel model);
 		#endregion
 	}
 }

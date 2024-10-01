@@ -200,6 +200,24 @@ namespace App.DAL.Implements
 				throw;
 			}
 		}
+
+		public async Task<BaseRepsonse> UpdateOrderItem(App_OrderItemsDTO orderItemsDTO, App_OrderDTO orderDTO)
+		{
+			try
+			{
+				BeginTransaction();
+				_dbAppContext.App_OrderItems.Update(orderItemsDTO);
+				_dbAppContext.App_Orders.Update(orderDTO);
+				var saver = await SaveAsync();
+				EndTransaction();
+				return saver;
+			}
+			catch (Exception)
+			{
+				CancelTransaction();
+				throw;
+			}
+		}
 		#endregion
 	}
 }

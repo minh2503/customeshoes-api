@@ -28,6 +28,7 @@ namespace App.DAL.Interfaces
 		Task<List<App_OrderItemsDTO>> GetOrderItemsByOrderId(long id);
 		Task<BaseRepsonse> CreateOrderItem (App_OrderItemsDTO orderItemDTO, App_OrderDTO order);
 		Task<BaseRepsonse> DeleteOrderItem (App_OrderItemsDTO orderItemsDTO, App_OrderDTO orderDTO);
+		Task<BaseRepsonse> UpdateOrderItem (App_OrderItemsDTO orderItemsDTO, App_OrderDTO orderDTO);
 		#endregion
 	}
 }

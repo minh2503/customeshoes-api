@@ -150,6 +150,34 @@ namespace App.BLL.Implements
 				throw;
 			}
 		}
+
+		public async Task<BaseRepsonse> UpdateOrderItem(long id, OrderItemUpdateModel model)
+		{
+			try
+			{
+				var orderItem = await _checkOutRepository.GetOrderItemById(id);
+				var shoes = await _shoesRepository.GetShoes(orderItem.ShoesId);
+				var order = await _checkOutRepository.GetOrderById(orderItem.OrderId);
+				if(orderItem.Quantity < model.Quantity)
+				{
+					var tempQuanti = model.Quantity - orderItem.Quantity;
+					order.Amount += shoes.Price * tempQuanti;
+				}
+				if(orderItem.Quantity > model.Quantity)
+				{
+					var tempQuanti = orderItem.Quantity - model.Quantity;
+					order.Amount -= shoes.Price * tempQuanti;
+				}
+				orderItem.Quantity = model.Quantity;
+				orderItem.UnitPrice = shoes.Price * orderItem.Quantity;
+				var response = await _checkOutRepository.UpdateOrderItem(orderItem, order);
+				return response;
+			}
+			catch(Exception)
+			{
+				throw;
+			}
+		}
 		#endregion
 
 		#region Private
