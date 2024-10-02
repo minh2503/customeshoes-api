@@ -162,7 +162,7 @@ namespace tapluyen.api.Controllers
 			try
 			{
 				var data = await _shoesBizLogic.GetListShoesByBrand(paging);
-				var result = new PagingDataModel<ShoesModel>(data, paging);
+				var result = new PagingDataModel<ShoesViewModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)

@@ -2,6 +2,7 @@
 using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
+using App.Entity.DTO;
 using App.Entity.Models;
 using App.Entity.Models.Orders;
 using App.Entity.Models.Shoes;
@@ -82,12 +83,13 @@ namespace App.BLL.Implements
 			return respose;
 		}
 
-		public async Task<List<ShoesModel>> GetListShoesByBrand(PagingModel paging)
+		public async Task<List<ShoesViewModel>> GetListShoesByBrand(PagingModel paging)
 		{
 			paging.BrandName = paging.BrandName.Trim();
 			var data = await _shoesRepository.GetListShoesByBrand(paging);
-			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
-			return data.Select(x => new ShoesModel(x)).ToList();
+			if (!data.Any()) return data.Select(b => new ShoesViewModel()).ToList();
+			var response = await GetShoesViewModels(data);
+			return response;
 		}
 
 		public async Task<List<ShoesModel>> GetListShoesByPrice(PagingModel paging)
@@ -135,6 +137,20 @@ namespace App.BLL.Implements
 			}
 
 			return shoesImagesViewModels;
+		}
+
+		private async Task<List<ShoesViewModel>> GetShoesViewModels(List<App_ShoesDTO> shoesDTOs)
+		{
+			var response = new List<ShoesViewModel>();
+
+			foreach (var shoes in shoesDTOs)
+			{
+				var shoesViewModel = new ShoesViewModel(shoes);
+				shoesViewModel.shoesImagesViewModels = await GetShoesImagesViewModels(shoes.Id);
+				response.Add(shoesViewModel);
+			}
+
+			return response;
 		}
 		#endregion
 	}
