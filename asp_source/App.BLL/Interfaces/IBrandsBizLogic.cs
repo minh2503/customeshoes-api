@@ -19,5 +19,6 @@ namespace App.BLL.Interfaces
 		Task<List<BrandModel>> GetTop5Brand();
 		Task<BaseRepsonse> DeleteBrand(long id);
 		Task<BrandModel> GetBrandByName(string name);
+		Task<List<BrandViewModel>> GetListBrandByName(PagingModel paging);
 	}
 }

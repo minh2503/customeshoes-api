@@ -30,6 +30,14 @@ namespace TFU.Common.Models
     }
 
 	#region Filter
+	public enum BrandNameFilter
+	{
+		JordanBestQuality = 1,
+		Nike = 2,
+		Adidas = 3,
+		HangChinhHang = 4,
+		Converse = 5,
+	}
 
 	public enum OrderStatusFilter
 	{

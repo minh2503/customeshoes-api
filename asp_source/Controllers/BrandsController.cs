@@ -61,12 +61,30 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		[HttpPost("get-all-brands")]
+		[HttpPost]
+		[Route("get-all-brands")]
 		public async Task<IActionResult> GetAllBrands([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _brandsBizLogic.GetListBrands(paging);
+				var result = new PagingDataModel<BrandViewModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllBrands: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPost]
+		[Route("filter-all-brands-by-name")]
+		public async Task<IActionResult> GetListBrandByName([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _brandsBizLogic.GetListBrandByName(paging);
 				var result = new PagingDataModel<BrandViewModel>(data, paging);
 				return GetSuccess(result);
 			}
