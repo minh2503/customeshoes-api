@@ -146,5 +146,10 @@ namespace App.DAL.Implements
 								.FirstOrDefaultAsync(x => x.Name.Equals(name) && x.IsActive == true);
 		}
 
+		public async Task<List<App_ShoesDTO>> GetRandom4Shoes()
+		{
+			var loadedRecord = await _dbAppContext.App_Shoes.Where(x => x.IsActive == true).ToListAsync();
+			return loadedRecord;
+		}
 	}
 }

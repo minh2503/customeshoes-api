@@ -68,6 +68,13 @@ namespace App.DAL.Implements
 								.ToListAsync();
 		}
 
+		public async Task<List<App_ShoesImagesDTO>> GetListShoesImagesByShoes(long shoesId)
+		{
+			var loadedRecord = _dbAppContext.App_ShoesImages.AsQueryable();
+			loadedRecord = loadedRecord.Where(x => x.ShoesId.Equals(shoesId));
+			return await loadedRecord.ToListAsync();
+		}
+
 		public async Task<App_ShoesImagesDTO> GetShoesImages(long id)
 		{
 			return await _dbAppContext.App_ShoesImages.AsNoTracking().FirstOrDefaultAsync(b => b.Id.Equals(id));

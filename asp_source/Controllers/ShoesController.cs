@@ -103,6 +103,22 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Route("get-random-4-shoes")]
+		public async Task<IActionResult> GetRandom4Shoes()
+		{
+			try
+			{
+				var data = await _shoesBizLogic.GetRandom4Shoes();
+				return GetSuccess(data);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllShoes: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
 		[Authorize]
 		[HttpPost]
 		[Route("delete-shoes/{id}")]

@@ -19,6 +19,7 @@ namespace App.DAL.Interfaces
 		Task<List<App_ShoesDTO>> GetListShoesByBrand(PagingModel paging);
 		Task<List<App_ShoesDTO>> GetListShoesByPrice(PagingModel paging);
 		Task<List<App_ShoesDTO>> GetListShoesByKey(PagingModel paging);
+		Task<List<App_ShoesDTO>> GetRandom4Shoes();
 		Task<BaseRepsonse> DeleteShoes(long id);
 	}
 }

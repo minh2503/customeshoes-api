@@ -127,6 +127,13 @@ namespace App.BLL.Implements
 			return await _shoesRepository.UpdateShoes(shoesDto, userName);
 		}
 
+		public async Task<List<ShoesViewModel>> GetRandom4Shoes()
+		{
+			var data = await _shoesRepository.GetRandom4Shoes();
+			var response = await GetShoesViewModels(data);
+			return response;
+		}
+
 		#region Private
 		private async Task<List<ShoesImagesViewModel>> GetShoesImagesViewModels(long shoesId)
 		{
@@ -154,7 +161,7 @@ namespace App.BLL.Implements
 			}
 
 			return response;
-		}
+		}		
 		#endregion
 	}
 }
