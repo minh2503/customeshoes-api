@@ -32,11 +32,8 @@ namespace App.DAL.Implements
 			{
 				var shoesImage = _dbAppContext.App_ShoesImages.FirstOrDefault(x => x.Id.Equals(dto.Id));
 				if(shoesImage == null) return new BaseRepsonse { IsSuccess = false , Message = "Không tìm thấy ảnh."};
-				shoesImage.Id = dto.Id;
-				shoesImage.Thumbnail = dto.Thumbnail;
 				shoesImage.IsCustomize = dto.IsCustomize;
 				shoesImage.IsUserCustom = dto.IsUserCustom;
-				shoesImage.ShoesId = dto.ShoesId;
 				_dbAppContext.App_ShoesImages.Update(shoesImage);
 			}
 			else
@@ -80,7 +77,7 @@ namespace App.DAL.Implements
 
 		public async Task<App_ShoesImagesDTO> GetShoesImages(long id)
 		{
-			return await _dbAppContext.App_ShoesImages.FirstOrDefaultAsync(b => b.Id.Equals(id));
+			return await _dbAppContext.App_ShoesImages.AsNoTracking().FirstOrDefaultAsync(b => b.Id.Equals(id));
 		}
 
 		public async Task<BaseRepsonse> DeleteImage(long id)
