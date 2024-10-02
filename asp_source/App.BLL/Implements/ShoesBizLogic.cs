@@ -101,12 +101,13 @@ namespace App.BLL.Implements
 			return response;
 		}
 
-		public async Task<List<ShoesModel>> GetListShoesByKey(PagingModel paging)
+		public async Task<List<ShoesViewModel>> GetListShoesByKey(PagingModel paging)
 		{
 			paging.Keyword = paging.Keyword.Trim();
 			var data = await _shoesRepository.GetListShoesByKey(paging);
-			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
-			return data.Select(x => new ShoesModel(x)).ToList();
+			if (!data.Any()) return data.Select(b => new ShoesViewModel()).ToList();
+			var response = await GetShoesViewModels(data);
+			return response;
 		}
 
 		public async Task<BaseRepsonse> UpdateShoes(ShoesUpdateModel model, string userName)

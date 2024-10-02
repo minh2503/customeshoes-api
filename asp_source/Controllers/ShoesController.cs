@@ -87,7 +87,7 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("get-all-shoes-by-paging")]
+		[Route("get-all-shoes")]
 		public async Task<IActionResult> GetListShoes([FromBody] PagingModel paging)
 		{
 			try
@@ -122,13 +122,13 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("search-shoes-by-key")]
+		[Route("filter-shoes-by-key")]
 		public async Task<IActionResult> GetListShoesByKey([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _shoesBizLogic.GetListShoesByKey(paging);
-				var result = new PagingDataModel<ShoesModel>(data, paging);
+				var result = new PagingDataModel<ShoesViewModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)
@@ -139,7 +139,7 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("search-shoes-by-price")]
+		[Route("filter-shoes-by-price")]
 		public async Task<IActionResult> GetListShoesByPrice([FromBody] PagingModel paging)
 		{
 			try
@@ -156,7 +156,7 @@ namespace tapluyen.api.Controllers
 		}
 
 		[HttpPost]
-		[Route("search-shoes-by-brand")]
+		[Route("filter-shoes-by-brand")]
 		public async Task<IActionResult> GetListShoesByBrand([FromBody] PagingModel paging)
 		{
 			try

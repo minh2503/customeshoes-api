@@ -84,7 +84,7 @@ namespace App.DAL.Implements
 			var any = await _dbAppContext.App_Shoes.AnyAsync(x => x.Id.Equals(id));
 			if (any)
 			{
-				var shoes = await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Id.Equals(id));
+				var shoes = await _dbAppContext.App_Shoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
 				if (shoes == null) return new BaseRepsonse { IsSuccess = false, Message = Constants.GetDataFailed };
 				if(shoes.IsActive == false) return new BaseRepsonse { IsSuccess = false, Message = "Giày không khả dụng." };
 				shoes.IsActive = false;
@@ -115,7 +115,10 @@ namespace App.DAL.Implements
 		public async Task<List<App_ShoesDTO>> GetListShoesByKey(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
-			loadedRecord = loadedRecord.Where(x => x.Name.Contains(paging.Keyword));
+			if(!string.IsNullOrEmpty(paging.Keyword))
+			{
+				loadedRecord = loadedRecord.Where(x => x.Name.Contains(paging.Keyword));
+			}
 			paging.TotalRecord = await loadedRecord.CountAsync();
 			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
