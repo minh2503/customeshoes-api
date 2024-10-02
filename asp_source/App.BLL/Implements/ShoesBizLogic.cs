@@ -47,11 +47,12 @@ namespace App.BLL.Implements
 			return await _shoesRepository.CreateShoes(shoesDto, shoesImageDto, userName);
 		}
 
-		public async Task<List<ShoesModel>> GetListShoes(PagingModel paging)
+		public async Task<List<ShoesViewModel>> GetListShoes(PagingModel paging)
 		{
 			var data = await _shoesRepository.GetAllShoes(paging);
-			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
-			return data.Select(x => new ShoesModel(x)).ToList();
+			if (!data.Any()) return data.Select(b => new ShoesViewModel()).ToList();
+			var response = await GetShoesViewModels(data);
+			return response;
 		}
 
 		public async Task<ShoesModel> GetShoes(long id)

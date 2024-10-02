@@ -17,7 +17,7 @@ namespace App.BLL.Interfaces
 		Task<ShoesModel> GetShoesByName(string name);
 		Task<ShoesModel> GetShoes(long id);
 		Task<ShoesViewModel> GetShoesById(long id);
-		Task<List<ShoesModel>> GetListShoes(PagingModel paging);
+		Task<List<ShoesViewModel>> GetListShoes(PagingModel paging);
 		Task<List<ShoesViewModel>> GetListShoesByBrand(PagingModel paging);
 		Task<List<ShoesViewModel>> GetListShoesByPrice(PagingModel paging);
 		Task<List<ShoesModel>> GetListShoesByKey(PagingModel paging);
