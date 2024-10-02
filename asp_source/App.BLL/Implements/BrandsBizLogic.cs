@@ -55,11 +55,11 @@ namespace App.BLL.Implements
 			return data.Select(x => new BrandModel(x)).ToList();
 		}
 
-		public async Task<List<BrandModel>> GetListBrands(PagingModel paging)
+		public async Task<List<BrandViewModel>> GetListBrands(PagingModel paging)
 		{
 			var data = await _brandRepository.GetAllBrands(paging);
-			if(!data.Any()) return data.Select(b => new BrandModel()).ToList();
-			return data.Select(x => new BrandModel(x)).ToList();
+			if(!data.Any()) return data.Select(b => new BrandViewModel()).ToList();
+			return data.Select(x => new BrandViewModel(x)).ToList();
 		}
 
 		public async Task<List<BrandModel>> GetTop5Brand()

@@ -18,6 +18,10 @@ namespace App.Entity.Models.Brands
 		public DateTime? CreatedDate { get; set; }
 		public string? CreatedBy { get; set; }
 
+        public BrandViewModel()
+        {
+            
+        }
         public BrandViewModel(App_BrandDTO dto)
         {
             Id = dto.Id;

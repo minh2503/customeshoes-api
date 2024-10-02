@@ -61,13 +61,13 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		[HttpPost("get-all-brands-by-paging")]
+		[HttpPost("get-all-brands")]
 		public async Task<IActionResult> GetAllBrands([FromBody] PagingModel paging)
 		{
 			try
 			{
 				var data = await _brandsBizLogic.GetListBrands(paging);
-				var result = new PagingDataModel<BrandModel>(data, paging);
+				var result = new PagingDataModel<BrandViewModel>(data, paging);
 				return GetSuccess(result);
 			}
 			catch (Exception ex)
@@ -77,20 +77,20 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-		[HttpGet("get-top-5-brand")]
-		public async Task<IActionResult> GetTop5Brand()
-		{
-			try
-			{
-				var data = await _brandsBizLogic.GetTop5Brand();
-				return GetSuccess(data);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError("GetAllBrands: {0} {1}", ex.Message, ex.StackTrace);
-				return SaveError(ex.Message);
-			}
-		}
+		//[HttpGet("get-top-5-brand")]
+		//public async Task<IActionResult> GetTop5Brand()
+		//{
+		//	try
+		//	{
+		//		var data = await _brandsBizLogic.GetTop5Brand();
+		//		return GetSuccess(data);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		_logger.LogError("GetAllBrands: {0} {1}", ex.Message, ex.StackTrace);
+		//		return SaveError(ex.Message);
+		//	}
+		//}
 
 		[Authorize]
 		[HttpPost]
