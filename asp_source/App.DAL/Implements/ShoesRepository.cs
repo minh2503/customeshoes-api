@@ -128,7 +128,7 @@ namespace App.DAL.Implements
 
 		public async Task<App_ShoesDTO> GetShoes(long id)
 		{
-			return await _dbAppContext.App_Shoes.FirstOrDefaultAsync(x => x.Id.Equals(id));
+			return await _dbAppContext.App_Shoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsActive == true);
 		}
 
 		public async Task<App_ShoesDTO> GetShoesByName(string name)

@@ -16,6 +16,7 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> UpdateShoes(ShoesUpdateModel model, string userName);
 		Task<ShoesModel> GetShoesByName(string name);
 		Task<ShoesModel> GetShoes(long id);
+		Task<ShoesViewModel> GetShoesById(long id);
 		Task<List<ShoesModel>> GetListShoes(PagingModel paging);
 		Task<List<ShoesModel>> GetListShoesByBrand(PagingModel paging);
 		Task<List<ShoesModel>> GetListShoesByPrice(PagingModel paging);

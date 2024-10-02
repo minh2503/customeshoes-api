@@ -71,13 +71,11 @@ namespace App.DAL.Implements
 								.ToListAsync();
 		}
 
-		public async Task<List<App_ShoesImagesDTO>> GetListShoesImagesByShoes(PagingModel model)
+		public async Task<List<App_ShoesImagesDTO>> GetListShoesImagesByShoes(long shoesId)
 		{
 			var loadedRecord = _dbAppContext.App_ShoesImages.AsQueryable();
-			loadedRecord = loadedRecord.Where(x => x.ShoesId.Equals(model.ShoesId));
-			model.TotalRecord = await loadedRecord.CountAsync();
-			return await loadedRecord.ToPagedList(model.PageNumber, model.PageSize)
-								.ToListAsync();
+			loadedRecord = loadedRecord.Where(x => x.ShoesId.Equals(shoesId));
+			return await loadedRecord.ToListAsync();
 		}
 
 		public async Task<App_ShoesImagesDTO> GetShoesImages(long id)

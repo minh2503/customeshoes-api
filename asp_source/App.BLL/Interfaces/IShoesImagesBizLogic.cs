@@ -14,7 +14,6 @@ namespace App.BLL.Interfaces
 		Task<BaseRepsonse> CreateUpdateShoesImages(ShoesImagesModel model);
 		Task<ShoesImagesModel> GetShoesImages(long id);
 		Task<List<ShoesImagesModel>> GetListShoesImages(PagingModel paging);
-		Task<List<ShoesImagesModel>> GetListShoesImagesByShoes(PagingModel paging);
 		Task<List<ShoesImagesModel>> GetUserCustomShoesImagesByShoes(PagingModel paging);
 		Task<BaseRepsonse> DeleteImage(long id);
 	}

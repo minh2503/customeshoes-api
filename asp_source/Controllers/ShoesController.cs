@@ -71,12 +71,12 @@ namespace tapluyen.api.Controllers
 
 		[HttpGet]
 		[Route("get-shoes/{id}")]
-		public async Task<IActionResult> GetShoes([FromRoute] long id)
+		public async Task<IActionResult> GetShoesById([FromRoute] long id)
 		{
 			try
 			{
-				var response = await _shoesBizLogic.GetShoes(id);
-				if (response == null || response.IsActive == false) return GetError("Giày không tồn tại");
+				var response = await _shoesBizLogic.GetShoesById(id);
+				if (response == null) return GetError("Giày không tồn tại");
 				return GetSuccess(response);
 			}
 			catch (Exception ex)

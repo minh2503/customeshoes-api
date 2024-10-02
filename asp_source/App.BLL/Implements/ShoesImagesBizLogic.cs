@@ -40,13 +40,6 @@ namespace App.BLL.Implements
 			return data.Select(x => new ShoesImagesModel(x)).ToList();
 		}
 
-		public async Task<List<ShoesImagesModel>> GetListShoesImagesByShoes(PagingModel paging)
-		{
-			var data = await _shoesImagesRepository.GetListShoesImagesByShoes(paging);
-			if (!data.Any()) return data.Select(b => new ShoesImagesModel()).ToList();
-			return data.Select(x => new ShoesImagesModel(x)).ToList();
-		}
-
 		public async Task<ShoesImagesModel> GetShoesImages(long id)
 		{
 			var response = await _shoesImagesRepository.GetShoesImages(id);

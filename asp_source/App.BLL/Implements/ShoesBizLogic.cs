@@ -3,7 +3,9 @@ using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.Models;
+using App.Entity.Models.Orders;
 using App.Entity.Models.Shoes;
+using App.Entity.Models.ShoesImages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,14 @@ namespace App.BLL.Implements
 	{
 		private readonly IShoesRepository _shoesRepository;
 		private readonly IBrandRepository _brandRepository;
+		private readonly IShoesImagesRepository _shoesImagesRepository;
 
-		public ShoesBizLogic(IShoesRepository shoesRepository, IBrandRepository brandRepository)
+		public ShoesBizLogic(IShoesRepository shoesRepository, IBrandRepository brandRepository,
+							IShoesImagesRepository shoesImagesRepository)
         {
 			this._shoesRepository = shoesRepository;
 			this._brandRepository = brandRepository;
+			this._shoesImagesRepository = shoesImagesRepository;
 		}
         public async Task<BaseRepsonse> CreateShoes(ShoesRequestModel model, string userName)
 		{
@@ -53,6 +58,15 @@ namespace App.BLL.Implements
 			var response = await _shoesRepository.GetShoes(id);
 			if (response == null) return null;
 			return new ShoesModel(response);
+		}
+
+		public async Task<ShoesViewModel> GetShoesById(long id)
+		{
+			var response = await _shoesRepository.GetShoes(id);
+			if(response == null) return null;
+			var shoesViewModel = new ShoesViewModel(response);
+			shoesViewModel.shoesImagesViewModels = await GetShoesImagesViewModels(id);
+			return shoesViewModel;
 		}
 
 		public async Task<ShoesModel> GetShoesByName(string name)
@@ -107,5 +121,21 @@ namespace App.BLL.Implements
 			var shoesDto = model.GetEntity();
 			return await _shoesRepository.UpdateShoes(shoesDto, userName);
 		}
+
+		#region Private
+		private async Task<List<ShoesImagesViewModel>> GetShoesImagesViewModels(long shoesId)
+		{
+			var shoesIamges = await _shoesImagesRepository.GetListShoesImagesByShoes(shoesId);
+			var shoesImagesViewModels = new List<ShoesImagesViewModel>();
+
+			foreach (var item in shoesIamges)
+			{
+				var shoesViewModel = new ShoesImagesViewModel(item);
+				shoesImagesViewModels.Add(shoesViewModel);
+			}
+
+			return shoesImagesViewModels;
+		}
+		#endregion
 	}
 }
