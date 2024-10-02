@@ -3,6 +3,7 @@ using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.Models;
+using App.Entity.Models.Brands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,10 @@ namespace App.BLL.Implements
         {
 			this._brandRepository = brandRepository;
 		}
-        public async Task<BaseRepsonse> CreateUpadteBrands(BrandModel model)
+        public async Task<BaseRepsonse> CreateUpadteBrands(BrandRequestModel model, string userName)
 		{
 			var dto = model.GetEntity();
-			var response = await _brandRepository.CreateUpdateBrand(dto);
+			var response = await _brandRepository.CreateUpdateBrand(dto, userName);
 			return response;
 		}
 

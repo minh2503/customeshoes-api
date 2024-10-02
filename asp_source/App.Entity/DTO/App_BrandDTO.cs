@@ -12,7 +12,7 @@ namespace App.Entity.DTO
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Thumbnail { get; set; }
-        public DateTime?CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
         public bool IsActive { get; set; }
     }

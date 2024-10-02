@@ -11,7 +11,7 @@ namespace App.DAL.Interfaces
 {
     public interface IBrandRepository
     {
-		Task<BaseRepsonse> CreateUpdateBrand(App_BrandDTO brandDTO);
+		Task<BaseRepsonse> CreateUpdateBrand(App_BrandDTO brandDTO, string userName);
 		Task<App_BrandDTO> GetBrand(long id);
 		Task<List<App_BrandDTO>> GetAllBrands(PagingModel paging);
 		Task<List<App_BrandDTO>> GetTop5Brands();

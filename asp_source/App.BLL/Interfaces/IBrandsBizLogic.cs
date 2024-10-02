@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TFU.Common.Models;
+using App.Entity.Models.Brands;
 
 namespace App.BLL.Interfaces
 {
 	public interface IBrandsBizLogic
 	{
-		Task<BaseRepsonse> CreateUpadteBrands(BrandModel model);
+		Task<BaseRepsonse> CreateUpadteBrands(BrandRequestModel model, string userName);
 		Task<BrandModel> GetBrand(long id);
 		Task<List<BrandModel>> GetListBrands(PagingModel paging);
 		Task<List<BrandModel>> GetBrandsWithoutPaging();

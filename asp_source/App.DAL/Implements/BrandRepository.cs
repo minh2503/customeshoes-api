@@ -24,32 +24,27 @@ namespace App.DAL.Implements
 			this._dbAppContext = dbAppContext;
 		}
 
-        public async Task<BaseRepsonse> CreateUpdateBrand(App_BrandDTO brandDTO)
+        public async Task<BaseRepsonse> CreateUpdateBrand(App_BrandDTO brandDTO, string userName)
 		{
 			var any = await _dbAppContext.App_Brands.AnyAsync(x => x.Id.Equals(brandDTO.Id));
 			if (any)
 			{
-				var brand = _dbAppContext.App_Brands.FirstOrDefault(x => x.Id.Equals(brandDTO.Id));
-				brand.Id = brandDTO.Id;
+				var brand = _dbAppContext.App_Brands.AsNoTracking().FirstOrDefault(x => x.Id.Equals(brandDTO.Id));
 				brand.Name = brandDTO.Name;
 				brand.Thumbnail = brandDTO.Thumbnail;
 				brand.Description = brandDTO.Description;
-				brand.CreatedDate = brandDTO.CreatedDate;
-				brand.CreatedBy = brandDTO.CreatedBy;
-				brand.IsActive = brandDTO.IsActive;
 				_dbAppContext.App_Brands.Update(brand);
 			}
 			else
 			{
 				var brand = new App_BrandDTO
 				{
-					Id = brandDTO.Id,
 					Name = brandDTO.Name,
 					Thumbnail = brandDTO.Thumbnail,
 					Description = brandDTO.Description,
-					CreatedDate = brandDTO.CreatedDate,
-					CreatedBy = brandDTO.CreatedBy,
-					IsActive = brandDTO.IsActive,
+					CreatedDate = DateTime.Now,
+					CreatedBy = userName,
+					IsActive = true,
 				};
 				_dbAppContext.App_Brands.Add(brand);
 			}

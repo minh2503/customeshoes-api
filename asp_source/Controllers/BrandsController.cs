@@ -1,6 +1,7 @@
 ﻿using App.BLL.Implements;
 using App.BLL.Interfaces;
 using App.Entity.Models;
+using App.Entity.Models.Brands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,6 @@ namespace tapluyen.api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
 	public class BrandsController : BaseAPIController
 	{
 		private readonly IBrandsBizLogic _brandsBizLogic;
@@ -26,19 +26,13 @@ namespace tapluyen.api.Controllers
 			this._identityBizLogic = identityBizLogic;
 		}
 
+		[Authorize]
 		[HttpPost("create-update-brands")]
-		public async Task<IActionResult> CreateUpdateBrands([FromBody] BrandModel model)
+		public async Task<IActionResult> CreateUpdateBrands([FromBody] BrandRequestModel model)
 		{
 			try
 			{
-				var user = await _identityBizLogic.GetByIdAsync(UserId);
-				if(user == null)
-				{
-					return Error("Không tìm thấy người dùng");
-				}
-				if (!ModelState.IsValid) return ModelInvalid();
-				model.CreatedBy = user.UserName;
-				var response = await _brandsBizLogic.CreateUpadteBrands(model);
+				var response = await _brandsBizLogic.CreateUpadteBrands(model, UserName);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);
 			}
@@ -98,6 +92,7 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[Authorize]
 		[HttpPost]
 		[Route("delete-brand/{id}")]
 		public async Task<IActionResult> DeleteBrand([FromRoute]long id)
