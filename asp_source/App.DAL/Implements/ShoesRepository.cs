@@ -123,8 +123,11 @@ namespace App.DAL.Implements
 		public async Task<List<App_ShoesDTO>> GetListShoesByPrice(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Shoes.Where(x => x.IsActive == true);
-			var priceRange = PriceRangeHelper.GetPriceRange(paging.PriceFilter.Value);
-			loadedRecord = loadedRecord.Where(x => x.Price >= priceRange.min && x.Price <= priceRange.max);
+			if(paging.PriceFilter.HasValue)
+			{
+				var priceRange = PriceRangeHelper.GetPriceRange(paging.PriceFilter.Value);
+				loadedRecord = loadedRecord.Where(x => x.Price >= priceRange.min && x.Price <= priceRange.max);
+			}
 			paging.TotalRecord = await loadedRecord.CountAsync();
 			return await loadedRecord.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}

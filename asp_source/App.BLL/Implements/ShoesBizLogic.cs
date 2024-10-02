@@ -92,11 +92,12 @@ namespace App.BLL.Implements
 			return response;
 		}
 
-		public async Task<List<ShoesModel>> GetListShoesByPrice(PagingModel paging)
+		public async Task<List<ShoesViewModel>> GetListShoesByPrice(PagingModel paging)
 		{
 			var data = await _shoesRepository.GetListShoesByPrice(paging);
-			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
-			return data.Select(x => new ShoesModel(x)).ToList();
+			if (!data.Any()) return data.Select(b => new ShoesViewModel()).ToList();
+			var response = await GetShoesViewModels(data);
+			return response;
 		}
 
 		public async Task<List<ShoesModel>> GetListShoesByKey(PagingModel paging)
