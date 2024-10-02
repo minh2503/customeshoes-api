@@ -11,7 +11,8 @@ namespace App.DAL.Interfaces
 {
 	public interface IShoesRepository
 	{
-		Task<BaseRepsonse> CreateUpdateShoes(App_ShoesDTO dto);
+		Task<BaseRepsonse> CreateShoes(App_ShoesDTO dto, App_ShoesImagesDTO imageDto, string userName);
+		Task<BaseRepsonse> UpdateShoes(App_ShoesDTO dto, string userName);
 		Task<App_ShoesDTO> GetShoesByName(string name);
 		Task<App_ShoesDTO> GetShoes(long id);
 		Task<List<App_ShoesDTO>> GetAllShoes(PagingModel paging);

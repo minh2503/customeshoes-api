@@ -3,6 +3,7 @@ using App.DAL.Implements;
 using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.Models;
+using App.Entity.Models.Shoes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,29 @@ namespace App.BLL.Implements
 	public class ShoesBizLogic : IShoesBizLogic
 	{
 		private readonly IShoesRepository _shoesRepository;
+		private readonly IBrandRepository _brandRepository;
 
-		public ShoesBizLogic(IShoesRepository shoesRepository)
+		public ShoesBizLogic(IShoesRepository shoesRepository, IBrandRepository brandRepository)
         {
 			this._shoesRepository = shoesRepository;
+			this._brandRepository = brandRepository;
 		}
-        public async Task<BaseRepsonse> CreateUpadteShoes(ShoesModel model)
+        public async Task<BaseRepsonse> CreateShoes(ShoesRequestModel model, string userName)
 		{
-			var dto = model.GetEntity();
-			return await _shoesRepository.CreateUpdateShoes(dto);
+			var existedBrand = await _brandRepository.GetBrandByName(model.BrandName);
+			if (existedBrand == null)
+			{
+				return new BaseRepsonse { IsSuccess = false, Message = $"Hãng giày {model.BrandName} không tồn tại" };
+			}
+
+			var existedShoes = await _shoesRepository.GetShoesByName(model.Name);
+			if (existedShoes != null)
+			{
+				return new BaseRepsonse { IsSuccess = false, Message = $"Tên giày {model.Name} đã tồn tại" };
+			}
+			var shoesDto = model.GetEntity();
+			var shoesImageDto = model.GetImageEntity();
+			return await _shoesRepository.CreateShoes(shoesDto, shoesImageDto, userName);
 		}
 
 		public async Task<List<ShoesModel>> GetListShoes(PagingModel paging)
@@ -74,6 +89,23 @@ namespace App.BLL.Implements
 			var data = await _shoesRepository.GetListShoesByKey(paging);
 			if (!data.Any()) return data.Select(b => new ShoesModel()).ToList();
 			return data.Select(x => new ShoesModel(x)).ToList();
+		}
+
+		public async Task<BaseRepsonse> UpdateShoes(ShoesUpdateModel model, string userName)
+		{
+			var existedBrand = await _brandRepository.GetBrandByName(model.BrandName);
+			if (existedBrand == null)
+			{
+				return new BaseRepsonse { IsSuccess = false, Message = $"Hãng giày {model.BrandName} không tồn tại" };
+			}
+
+			var existedShoes = await _shoesRepository.GetShoesByName(model.Name);
+			if (existedShoes != null)
+			{
+				return new BaseRepsonse { IsSuccess = false, Message = $"Tên giày {model.Name} đã tồn tại" };
+			}
+			var shoesDto = model.GetEntity();
+			return await _shoesRepository.UpdateShoes(shoesDto, userName);
 		}
 	}
 }

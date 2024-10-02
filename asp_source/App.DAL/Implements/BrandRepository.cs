@@ -93,7 +93,8 @@ namespace App.DAL.Implements
 
 		public async Task<App_BrandDTO> GetBrandByName(string name)
 		{
-			return await _dbAppContext.App_Brands.FirstOrDefaultAsync(x => x.Name.Equals(name));
+			return await _dbAppContext.App_Brands.AsNoTracking()
+							.FirstOrDefaultAsync(x => x.Name.Equals(name) && x.IsActive == true);
 		}
 
 		public Task<List<App_BrandDTO>> GetBrandsWithoutPaging()

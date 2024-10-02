@@ -12,10 +12,10 @@ namespace App.Entity.DTO
         public string? Name { get; set; }
         public string? Description { get; set; }
         public double Price { get; set; }
-        public bool IsCustomizable { get; set; } = false;
-		public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public bool IsCustomizable { get; set; }
+		public DateTime CreatedDate { get; set; }
 		public string? CreatedBy { get; set; }
-        public DateTime ModifyDate { get; set; } = DateTime.Now;
+        public DateTime ModifyDate { get; set; }
 		public string? BrandName { get; set; }
         public bool IsActive { get; set; }
         public string? ModifyBy { get; set; }
