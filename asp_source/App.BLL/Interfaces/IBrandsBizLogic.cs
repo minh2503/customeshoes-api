@@ -13,7 +13,7 @@ namespace App.BLL.Interfaces
 	public interface IBrandsBizLogic
 	{
 		Task<BaseRepsonse> CreateUpadteBrands(BrandRequestModel model, string userName);
-		Task<BrandModel> GetBrand(long id);
+		Task<BrandViewModel> GetBrand(long id);
 		Task<List<BrandModel>> GetListBrands(PagingModel paging);
 		Task<List<BrandModel>> GetBrandsWithoutPaging();
 		Task<List<BrandModel>> GetTop5Brand();
