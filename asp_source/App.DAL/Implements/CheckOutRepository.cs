@@ -71,6 +71,13 @@ namespace App.DAL.Implements
 			return await loadeRecords.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}
 
+		public async Task<List<App_OrderDTO>> GetAllOrdersByUserId(PagingModel paging, long userId)
+		{
+			var loadeRecords = _dbAppContext.App_Orders.AsNoTracking().Where(x => x.UserId.Equals(userId));
+			paging.TotalRecord = await loadeRecords.CountAsync();
+			return await loadeRecords.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
+		}
+
 		public async Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging)
 		{
 			var loadedRecord = _dbAppContext.App_Orders.AsNoTracking().AsQueryable();
@@ -142,6 +149,7 @@ namespace App.DAL.Implements
 		{
 			return await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.OrderCode.Equals(orderCode));
 		}
+
 		#endregion
 
 		#region OrderItem

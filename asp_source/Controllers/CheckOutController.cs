@@ -111,6 +111,26 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[Authorize]
+		[HttpPost]
+		[Route("get-all-orders-by-userId")]
+		public async Task<IActionResult> GetAllOrdersByUserId([FromBody] PagingModel paging)
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.GetAllOrdersByUserId(paging, UserId);
+				if (data == null) return GetError();
+				if (!data.Any()) return GetSuccess("Chưa có đơn order nào.");
+				var result = new PagingDataModel<OrderDetailModel>(data, paging);
+				return GetSuccess(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetAllOrders: {0} {1}", ex.Message, ex.StackTrace);
+				return GetError(ex.Message);
+			}
+		}
+
 		[HttpPost]
 		[Route("filter-all-orders-by-status")]
 		public async Task<IActionResult> GetAllOrdersByStatus([FromBody] PagingModel paging)

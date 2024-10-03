@@ -59,6 +59,13 @@ namespace App.BLL.Implements
 			return response;
 		}
 
+		public async Task<List<OrderDetailModel>> GetAllOrdersByUserId(PagingModel paging, long userId)
+		{
+			var data = await _checkOutRepository.GetAllOrdersByUserId(paging, userId);
+			var response = await GetOrderDetails(data);
+			return response;
+		}
+
 		public async Task<List<OrderDetailModel>> GetAllOrdersByKey(PagingModel paging)
 		{
 			var data = await _checkOutRepository.GetAllOrdersByKey(paging);

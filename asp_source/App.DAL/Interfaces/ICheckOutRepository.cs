@@ -21,6 +21,7 @@ namespace App.DAL.Interfaces
 		Task<List<App_OrderDTO>> GetAllOrdersByStatus(PagingModel paging);
 		Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging);
 		Task<App_OrderDTO> GetOrderByCode(string orderCode);
+		Task<List<App_OrderDTO>> GetAllOrdersByUserId(PagingModel paging, long userId);
 		#endregion
 
 		#region OrderItem
