@@ -23,7 +23,8 @@ namespace App.Entity.Models.Orders
 
         [Required(ErrorMessage = "Ảnh không được để trống.")]
         public long ShoesImageId { get; set; }
-
+        [Required(ErrorMessage = "Size giày không được để trống.")]
+        public string Size { get; set; } = null!;
         public bool IsPaymentMethodValid()
         {
             return Enum.IsDefined(typeof(PaymentMethod), PaymentMethod);
@@ -52,6 +53,7 @@ namespace App.Entity.Models.Orders
                 ShoesId = ShoesId,
                 Quantity = Quantity,
                 ShoesImageId = ShoesImageId,
+                Size = Size,
             };
         }
     }

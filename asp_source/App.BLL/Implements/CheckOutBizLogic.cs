@@ -170,6 +170,7 @@ namespace App.BLL.Implements
 				}
 				orderItem.Quantity = model.Quantity;
 				orderItem.UnitPrice = shoes.Price * orderItem.Quantity;
+				orderItem.Size = model.Size;
 				var response = await _checkOutRepository.UpdateOrderItem(orderItem, order);
 				return response;
 			}

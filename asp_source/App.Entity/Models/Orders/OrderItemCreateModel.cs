@@ -19,15 +19,18 @@ namespace App.Entity.Models.Orders
 		public long ShoesImageId { get; set; }
 		[Required(ErrorMessage = "Mã đơn hàng không được để trống.")]
 		public long OrderId { get; set; }
+		[Required(ErrorMessage = "Size giày không được để trống.")]
+		public string Size { get; set; } = null!;
 
-		public App_OrderItemsDTO GetEntity()
+        public App_OrderItemsDTO GetEntity()
 		{
 			return new App_OrderItemsDTO
 			{
 				ShoesId = ShoesId,
 				Quantity = Quantity,
 				ShoesImageId = ShoesImageId,
-				OrderId = OrderId
+				OrderId = OrderId,
+				Size = Size
 			};
 		}
 	}

@@ -13,12 +13,13 @@ namespace App.Entity.Models.Orders
     {
         [Required(ErrorMessage = "Số lượng không được để trống.")]
         public int Quantity { get; set; }
-
-		public App_OrderItemsDTO GetEntity()
+        public string? Size { get; set; }
+        public App_OrderItemsDTO GetEntity()
 		{
 			return new App_OrderItemsDTO
 			{
 				Quantity = Quantity,
+				Size = Size
 			};
 		}
 	}

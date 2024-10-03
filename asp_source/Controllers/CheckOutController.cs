@@ -49,7 +49,7 @@ namespace tapluyen.api.Controllers
 				}
 
 				var existedShoes = await _shoesBizLogic.GetShoes(model.ShoesId);
-				if (existedShoes == null || existedShoes.IsActive == false)
+				if (existedShoes == null)
 				{
 					ModelState.AddModelError("ShoesId", "Giày không khả dụng.");
 					return ModelInvalid();
@@ -59,11 +59,6 @@ namespace tapluyen.api.Controllers
 				if (!existedImage.ShoesId.Equals(model.ShoesId))
 				{
 					ModelState.AddModelError("ShoesImageId", "Ảnh không khớp với giày.");
-					return ModelInvalid();
-				}
-				if (existedImage.IsUserCustom == false)
-				{
-					ModelState.AddModelError("ShoesImageId", "Ảnh không phải do người dùng custom.");
 					return ModelInvalid();
 				}
 
@@ -112,7 +107,7 @@ namespace tapluyen.api.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError("GetAllOrders: {0} {1}", ex.Message, ex.StackTrace);
-				return SaveError(ex.Message);
+				return GetError(ex.Message);
 			}
 		}
 
@@ -214,12 +209,6 @@ namespace tapluyen.api.Controllers
 					ModelState.AddModelError("ShoesImageId", "Ảnh không khớp với giày.");
 					return ModelInvalid();
 				}
-				if (existedImage.IsUserCustom == false)
-				{
-					ModelState.AddModelError("ShoesImageId", "Ảnh không phải do người dùng custom.");
-					return ModelInvalid();
-				}
-
 				var response = await _checkOutBizLogic.CreateOrderItem(model, existedShoes);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);

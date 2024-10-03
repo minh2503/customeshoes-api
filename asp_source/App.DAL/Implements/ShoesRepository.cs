@@ -148,8 +148,10 @@ namespace App.DAL.Implements
 
 		public async Task<List<App_ShoesDTO>> GetRandom4Shoes()
 		{
-			var loadedRecord = await _dbAppContext.App_Shoes.Where(x => x.IsActive == true).ToListAsync();
-			return loadedRecord;
+			var randomRecords = await _dbAppContext.App_Shoes.OrderBy(x => Guid.NewGuid())
+															.Take(4)
+															.ToListAsync();
+			return randomRecords;
 		}
 	}
 }

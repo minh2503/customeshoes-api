@@ -14,5 +14,6 @@ namespace App.Entity.DTO
 		public double UnitPrice { get; set; }
 		public long ShoesImageId { get; set; }
 		public long OrderId { get; set; }
-	}
+        public string? Size { get; set; }
+    }
 }

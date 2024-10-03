@@ -48,6 +48,7 @@ namespace App.DAL.Implements
 					Quantity = orderItemDTO.Quantity,
 					UnitPrice = orderItemDTO.UnitPrice,
 					ShoesId = orderItemDTO.ShoesId,
+					Size = orderItemDTO.Size,
 				};
 				_dbAppContext.App_OrderItems.Add(item);
 
@@ -167,6 +168,7 @@ namespace App.DAL.Implements
 					ShoesId = orderItemDTO.ShoesId,
 					ShoesImageId = orderItemDTO.ShoesImageId,
 					OrderId = orderItemDTO.OrderId,
+					Size = orderItemDTO.Size,
 				};
 				await _dbAppContext.App_OrderItems.AddAsync(orderItemDTO);
 				_dbAppContext.App_Orders.Update(orderDTO);

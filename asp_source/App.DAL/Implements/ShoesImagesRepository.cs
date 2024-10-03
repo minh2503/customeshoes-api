@@ -32,6 +32,7 @@ namespace App.DAL.Implements
 			{
 				var shoesImage = _dbAppContext.App_ShoesImages.FirstOrDefault(x => x.Id.Equals(dto.Id));
 				if(shoesImage == null) return new BaseRepsonse { IsSuccess = false , Message = "Không tìm thấy ảnh."};
+				if(!shoesImage.ShoesId.Equals(dto.ShoesId)) return new BaseRepsonse { IsSuccess = false , Message = "Ảnh không khớp với giày."};
 				shoesImage.IsCustomize = dto.IsCustomize;
 				shoesImage.IsUserCustom = dto.IsUserCustom;
 				_dbAppContext.App_ShoesImages.Update(shoesImage);
