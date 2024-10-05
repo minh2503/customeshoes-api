@@ -200,7 +200,8 @@ namespace tapluyen.api
                      "http://localhost:3000",
                      "https://cdn.tapta.net/",
 
-                    "https://localhost:3000")
+                    "https://localhost:3000",
+                    "https://localhost:5000/")
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials());
                 app.UseSwagger();
                 app.UseSwaggerUI();

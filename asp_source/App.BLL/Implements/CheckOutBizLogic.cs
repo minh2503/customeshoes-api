@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TFU.Common.Models;
+using TFU.DAL.Interfaces;
 
 namespace App.BLL.Implements
 {
@@ -20,14 +21,17 @@ namespace App.BLL.Implements
 		private readonly IShoesRepository _shoesRepository;
 		private readonly IShoesImagesRepository _shoesImagesRepository;
 		private readonly ICheckOutRepository _checkOutRepository;
+		private readonly IIdentityRepository _identityRepository;
 
 		public CheckOutBizLogic(IShoesRepository shoesRepository,
 								IShoesImagesRepository shoesImagesRepository,
-								ICheckOutRepository checkOutRepository)
+								ICheckOutRepository checkOutRepository,
+								IIdentityRepository identityRepository)
         {
 			this._shoesRepository = shoesRepository;
 			this._shoesImagesRepository = shoesImagesRepository;
 			this._checkOutRepository = checkOutRepository;
+			this._identityRepository = identityRepository;
 		}
         public async Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId)
 		{
@@ -107,8 +111,7 @@ namespace App.BLL.Implements
 			var response = await _checkOutRepository.GetOrderById(id);
 			if (response == null) return null;
 
-			var model = new OrderDetailModel(response);
-			model.orderItemDetailModels = await GetOrderItemsDetails(id);
+			var model = await GetOrderDetailModel(response);
 			return model;
 		}
 
@@ -117,8 +120,7 @@ namespace App.BLL.Implements
 			var response = await _checkOutRepository.GetOrderByCode(orderCode);
 			if (response == null) return null;
 
-			var model = new OrderDetailModel(response);
-			model.orderItemDetailModels = await GetOrderItemsDetails(model.Id);
+			var model = await GetOrderDetailModel(response);
 			return model;
 		}
 
@@ -270,12 +272,20 @@ namespace App.BLL.Implements
 
 			foreach (var order in orderDTO)
 			{
-				var orderDetailModel = new OrderDetailModel(order);
-				orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(order.Id);
+				var orderDetailModel = await GetOrderDetailModel(order);
 				response.Add(orderDetailModel);
 			}
 
 			return response;
+		}
+
+		private async Task<OrderDetailModel> GetOrderDetailModel(App_OrderDTO dto)
+		{
+			var orderDetailModel = new OrderDetailModel(dto);
+			var user = await _identityRepository.GetByIdAsync(dto.UserId);
+			orderDetailModel.UserName = user.UserName;
+			orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(dto.Id);
+			return orderDetailModel;
 		}
 		#endregion
 	}

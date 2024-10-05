@@ -12,7 +12,7 @@ namespace App.Entity.Models.Orders
 	public class OrderDetailModel
 	{
 		public long Id { get; set; }
-		public long UserId { get; set; }
+		public string UserName { get; set; }
 		public int? Status { get; set; }
 		public string? Note { get; set; }
 		public double? Amount { get; set; }
@@ -44,7 +44,6 @@ namespace App.Entity.Models.Orders
 		public OrderDetailModel(App_OrderDTO dto)
 		{
 			Id = dto.Id;
-			UserId = dto.UserId;
 			Status = dto.Status;
 			Note = dto.Note;
 			Amount = dto.Amount;
