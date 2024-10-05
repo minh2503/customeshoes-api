@@ -179,7 +179,6 @@ namespace tapluyen.api
                 "https://tapta.net",
                 "https://admin.tapta.net",
                 "http://localhost:3000",
-
                 "https://cdn.tapta.net"
                 )
 
