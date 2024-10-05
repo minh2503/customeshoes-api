@@ -137,6 +137,10 @@ namespace App.DAL.Implements
 		public async Task<List<App_OrderDTO>> GetAllOrdersByUserId(PagingModel paging, long userId)
 		{
 			var loadeRecords = _dbAppContext.App_Orders.AsNoTracking().Where(x => x.UserId.Equals(userId));
+			if (paging.OrderStatus.HasValue)
+			{
+				loadeRecords = loadeRecords.Where(x => x.Status == (int)paging.OrderStatus);
+			}
 			paging.TotalRecord = await loadeRecords.CountAsync();
 			return await loadeRecords.ToPagedList(paging.PageNumber, paging.PageSize).ToListAsync();
 		}

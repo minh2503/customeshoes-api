@@ -137,6 +137,7 @@ namespace tapluyen.api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("get-all-orders")]
         public async Task<IActionResult> GetAllOrders([FromBody] PagingModel paging)
