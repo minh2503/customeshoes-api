@@ -63,6 +63,69 @@ namespace App.DAL.Implements
 			}
 		}
 
+		public async Task<BaseRepsonse> CreateUpdateOrder(App_OrderDTO orderDTO, App_OrderItemsDTO orderItemDTO)
+		{
+			try
+			{
+				BeginTransaction();
+				var any = await _dbAppContext.App_Orders.AnyAsync(x => x.Id.Equals(orderDTO.Id));
+				if (any)
+				{
+					var order = await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.Id.Equals(orderDTO.Id));
+					switch (orderDTO.Status)
+					{
+						case 2: order.PaymentDate = DateTime.Now; break;
+						case 3: order.ShipedDate = DateTime.Now; break;
+						case 4: order.DeliveredDate = DateTime.Now; break;
+						default: break;
+					}
+
+					order.Status = orderDTO.Status;
+					order.Note = orderDTO.Note;
+					order.ShipAddress = orderDTO.ShipAddress;
+					order.PaymentMethod = orderDTO.PaymentMethod;
+					order.ModifyDate = DateTime.Now;
+					order.ModifiedBy = orderDTO.ModifiedBy;
+					_dbAppContext.App_Orders.Update(order);
+				}
+				else
+				{
+					var order = new App_OrderDTO
+					{
+						UserId = orderDTO.UserId,
+						Status = orderDTO.Status,
+						Note = orderDTO.Note,
+						Amount = orderDTO.Amount,
+						ShipAddress = orderDTO.ShipAddress,
+						PaymentMethod = orderDTO.PaymentMethod,
+						OrderCode = orderDTO.OrderCode,
+						CreatedDate = DateTime.Now,
+					};
+					await _dbAppContext.App_Orders.AddAsync(order);
+					await _dbAppContext.SaveChangesAsync();
+
+					var item = new App_OrderItemsDTO
+					{
+						ShoesImageId = orderItemDTO.ShoesImageId,
+						OrderId = order.Id,
+						Quantity = orderItemDTO.Quantity,
+						UnitPrice = orderItemDTO.UnitPrice,
+						ShoesId = orderItemDTO.ShoesId,
+						Size = orderItemDTO.Size,
+					};
+					_dbAppContext.App_OrderItems.Add(item);
+				}
+				var saver = await SaveAsync();
+				EndTransaction();
+				return saver;
+			}
+			catch (Exception)
+			{
+				CancelTransaction();
+				throw;
+			}
+		}
+
 		#region Order
 		public async Task<List<App_OrderDTO>> GetAllOrders(PagingModel paging)
 		{

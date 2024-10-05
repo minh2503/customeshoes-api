@@ -51,6 +51,28 @@ namespace App.BLL.Implements
 			}
 		}
 
+		public async Task<BaseRepsonse> CreateUpdateOrder(CreateUpdateOrderModel model, ShoesModel shoesModel, long userId)
+		{
+			try
+			{
+				var orderDTO = model.GetOrderEntity();
+				var orderItemDTO = model.GetOrderItemsEntity();
+				var shoesDTO = shoesModel.GetEntity();
+
+				orderDTO.UserId = userId;
+				orderItemDTO.UnitPrice = shoesDTO.Price * orderItemDTO.Quantity;
+				orderDTO.Amount = orderItemDTO.UnitPrice;
+				orderDTO.OrderCode = await GenerateIncrementalOrderIdAsync();
+
+				var response = await _checkOutRepository.CreateUpdateOrder(orderDTO, orderItemDTO);
+				return response;
+			}
+			catch(Exception)
+			{
+				throw;
+			}
+		}
+
 		#region Order
 		public async Task<List<OrderDetailModel>> GetAllOrders(PagingModel paging)
 		{

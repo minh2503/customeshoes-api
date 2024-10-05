@@ -14,6 +14,7 @@ namespace App.BLL.Interfaces
     public interface ICheckOutBizLogic
 	{
 		Task<BaseRepsonse> CheckOutAsync(CheckOutModel model, ShoesModel shoesModel, long userId);
+		Task<BaseRepsonse> CreateUpdateOrder(CreateUpdateOrderModel model, ShoesModel shoesModel, long userId);
 
 		#region Order
 		Task<BaseRepsonse> UpdateOrder(OrderUpdateModel model, string userName);

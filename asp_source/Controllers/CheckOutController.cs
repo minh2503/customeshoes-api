@@ -73,7 +73,52 @@ namespace tapluyen.api.Controllers
             }
         }
 
-        [HttpPut]
+		[HttpPost]
+		[Route("create-update-order")]
+		public async Task<IActionResult> CreateUpdateOrder(CreateUpdateOrderModel model)
+		{
+			try
+			{
+				if (!ModelState.IsValid) return ModelInvalid();
+
+				if (!model.IsPaymentMethodValid())
+				{
+					ModelState.AddModelError("PaymentMethod", "Phương thức thanh toán không hợp lệ.");
+					return ModelInvalid();
+				}
+
+				if (!model.IsOrderStatusValid())
+				{
+					ModelState.AddModelError("Status", "Trạng thái đơn hàng không hợp lệ.");
+					return ModelInvalid();
+				}
+
+				var existedShoes = await _shoesBizLogic.GetShoes(model.ShoesId);
+				if (existedShoes == null)
+				{
+					ModelState.AddModelError("ShoesId", "Giày không khả dụng.");
+					return ModelInvalid();
+				}
+
+				var existedImage = await _shoesImagesBizLogic.GetShoesImages(model.ShoesImageId);
+				if (!existedImage.ShoesId.Equals(model.ShoesId))
+				{
+					ModelState.AddModelError("ShoesImageId", "Ảnh không khớp với giày.");
+					return ModelInvalid();
+				}
+
+				var response = await _checkOutBizLogic.CreateUpdateOrder(model, existedShoes, UserId);
+				if (!response.IsSuccess) return SaveError(response.Message);
+				return SaveSuccess(response);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("CheckOutAsync: {0} {1}", ex.Message, ex.StackTrace);
+				return SaveError(ex.Message);
+			}
+		}
+
+		[HttpPut]
         [Route("update-order")]
         public async Task<IActionResult> UpdateOrder(OrderUpdateModel model)
         {
