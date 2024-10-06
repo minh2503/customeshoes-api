@@ -63,7 +63,7 @@ namespace App.DAL.Implements
 			}
 		}
 
-		public async Task<BaseRepsonse> CreateUpdateOrder(App_OrderDTO orderDTO, App_OrderItemsDTO orderItemDTO)
+		public async Task<BaseRepsonse> CreateUpdateOrder(App_OrderDTO orderDTO, App_OrderItemsDTO orderItemDTO, string thumbnail)
 		{
 			try
 			{
@@ -104,9 +104,19 @@ namespace App.DAL.Implements
 					await _dbAppContext.App_Orders.AddAsync(order);
 					await _dbAppContext.SaveChangesAsync();
 
+					var image = new App_ShoesImagesDTO
+					{
+						ShoesId = orderItemDTO.ShoesId,
+						Thumbnail = thumbnail,
+						IsCustomize = true,
+						IsUserCustom =  true,
+					};
+					await _dbAppContext.App_ShoesImages.AddAsync(image);
+					await _dbAppContext.SaveChangesAsync();
+
 					var item = new App_OrderItemsDTO
 					{
-						ShoesImageId = orderItemDTO.ShoesImageId,
+						ShoesImageId = image.Id,
 						OrderId = order.Id,
 						Quantity = orderItemDTO.Quantity,
 						UnitPrice = orderItemDTO.UnitPrice,

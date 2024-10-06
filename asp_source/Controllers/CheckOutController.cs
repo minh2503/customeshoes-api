@@ -100,13 +100,6 @@ namespace tapluyen.api.Controllers
 					return ModelInvalid();
 				}
 
-				var existedImage = await _shoesImagesBizLogic.GetShoesImages(model.ShoesImageId);
-				if (!existedImage.ShoesId.Equals(model.ShoesId))
-				{
-					ModelState.AddModelError("ShoesImageId", "Ảnh không khớp với giày.");
-					return ModelInvalid();
-				}
-
 				var response = await _checkOutBizLogic.CreateUpdateOrder(model, existedShoes, UserId);
 				if (!response.IsSuccess) return SaveError(response.Message);
 				return SaveSuccess(response);

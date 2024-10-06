@@ -23,7 +23,7 @@ namespace App.Entity.Models.Orders
 		public int Quantity { get; set; }
 
 		[Required(ErrorMessage = "Ảnh không được để trống.")]
-		public long ShoesImageId { get; set; }
+		public string? Thumbnail { get; set; }
 		[Required(ErrorMessage = "Size giày không được để trống.")]
 		public string Size { get; set; } = null!;
 		public OrderStatus Status { get; set; }
@@ -62,7 +62,6 @@ namespace App.Entity.Models.Orders
 			{
 				ShoesId = ShoesId,
 				Quantity = Quantity,
-				ShoesImageId = ShoesImageId,
 				Size = Size,
 			};
 		}

@@ -68,7 +68,7 @@ namespace App.BLL.Implements
 				orderDTO.Amount = orderItemDTO.UnitPrice;
 				orderDTO.OrderCode = await GenerateIncrementalOrderIdAsync();
 
-				var response = await _checkOutRepository.CreateUpdateOrder(orderDTO, orderItemDTO);
+				var response = await _checkOutRepository.CreateUpdateOrder(orderDTO, orderItemDTO, model.Thumbnail);
 				return response;
 			}
 			catch(Exception)
