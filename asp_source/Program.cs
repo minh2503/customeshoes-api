@@ -179,9 +179,11 @@ namespace tapluyen.api
                 "https://tapta.net",
                 "https://admin.tapta.net",
                 "http://localhost:3000",
-                "https://cdn.tapta.net"
-                )
+                "https://cdn.tapta.net",
+                    "http://localhost:5000"
 
+
+                )
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             }
             else
@@ -199,9 +201,10 @@ namespace tapluyen.api
                      "https://admin.tapta.net",
                      "http://localhost:3000",
                      "https://cdn.tapta.net/",
-
                     "https://localhost:3000",
-                    "https://localhost:5000/")
+                    "http://localhost:5000"
+
+                    )
                 .AllowAnyHeader().AllowAnyMethod().AllowCredentials());
                 app.UseSwagger();
                 app.UseSwaggerUI();
