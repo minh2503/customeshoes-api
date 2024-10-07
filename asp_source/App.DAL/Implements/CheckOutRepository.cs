@@ -16,8 +16,8 @@ namespace App.DAL.Implements
 		private readonly ApplicationDbContext _dbAppContext;
 
 		public CheckOutRepository(IConfiguration config, TFUDbContext dbTFUContext, ApplicationDbContext dbAppContext)
-                : base(config, dbTFUContext, dbAppContext)
-        {
+				: base(config, dbTFUContext, dbAppContext)
+		{
 			this._dbAppContext = dbAppContext;
 		}
 
@@ -36,7 +36,7 @@ namespace App.DAL.Implements
 					PaymentMethod = (int)PaymentMethod.COD,
 					OrderCode = orderDTO.OrderCode,
 					ModifiedBy = orderDTO.ModifiedBy,
-					CreatedDate =  DateTime.Now,
+					CreatedDate = DateTime.Now,
 				};
 				await _dbAppContext.App_Orders.AddAsync(order);
 				await _dbAppContext.SaveChangesAsync();
@@ -109,7 +109,7 @@ namespace App.DAL.Implements
 						ShoesId = orderItemDTO.ShoesId,
 						Thumbnail = thumbnail,
 						IsCustomize = true,
-						IsUserCustom =  true,
+						IsUserCustom = true,
 					};
 					await _dbAppContext.App_ShoesImages.AddAsync(image);
 					await _dbAppContext.SaveChangesAsync();
@@ -200,7 +200,7 @@ namespace App.DAL.Implements
 				var order = _dbAppContext.App_Orders.FirstOrDefault(x => x.Id.Equals(dto.Id));
 				if (order == null) return new BaseRepsonse { IsSuccess = false, Message = "Không tìm thấy đơn hàng." };
 
-				switch(dto.Status)
+				switch (dto.Status)
 				{
 					case 2: order.PaymentDate = DateTime.Now; break;
 					case 3: order.ShipedDate = DateTime.Now; break;
@@ -225,6 +225,85 @@ namespace App.DAL.Implements
 		public async Task<App_OrderDTO> GetOrderByCode(string orderCode)
 		{
 			return await _dbAppContext.App_Orders.FirstOrDefaultAsync(x => x.OrderCode.Equals(orderCode));
+		}
+
+		#endregion
+
+		#region Admin
+
+		public async Task<List<App_OrderDTO>> GetAllOrdersWithStatusNoPaging(OrderStatusFilter orderStatusFilter)
+		{
+			var loadedRecords = _dbAppContext.App_Orders.Where(x => x.Status == (int)orderStatusFilter);
+			return await loadedRecords.ToListAsync();
+		}
+
+		public async Task<int> GetTotalOrderInMonth()
+		{
+			var loadedRecords = _dbAppContext.App_Orders;
+			var total = await loadedRecords.CountAsync();
+			return total;
+		}
+
+		public async Task<int> GetTotalPendingOrder()
+		{
+			var loadedOrder = _dbAppContext.App_Orders.Where(x => x.Status == (int)OrderStatusFilter.Shipped);
+			return await loadedOrder.CountAsync();
+		}
+		public async Task<int> GetTotalProcceedOrder()
+		{
+			var loadedOrder = _dbAppContext.App_Orders.Where(x => x.Status == (int)OrderStatusFilter.Delivered);
+			return await loadedOrder.CountAsync();
+		}
+
+		public async Task<int> GetTotalOrderInCurrentMonth(DateTime currentMonthStart)
+		{
+			var totalCurrentMonth = await _dbAppContext.App_Orders
+								.Where(o => o.CreatedDate >= currentMonthStart && o.CreatedDate < currentMonthStart.AddMonths(1))
+								.SumAsync(o => o.Amount ?? 0);
+			return (int)totalCurrentMonth;
+		}
+
+		public async Task<int> GetTotalOrderInLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd)
+		{
+			var totalLastMonth = await _dbAppContext.App_Orders
+							.Where(o => o.CreatedDate >= lastMonthStart && o.CreatedDate <= lastMonthEnd)
+							.SumAsync(o => o.Amount ?? 0);
+
+			return (int)totalLastMonth;
+		}
+
+		public async Task<double> GetTotalRevenueInCurrentMonth(DateTime currentMonthStart)
+		{
+			var totalCurrentMonthRevenue = await _dbAppContext.App_Orders
+										.Where(o => o.CreatedDate >= currentMonthStart && o.CreatedDate < currentMonthStart.AddMonths(1))
+										.SumAsync(o => o.Amount ?? 0);
+			return totalCurrentMonthRevenue;
+		}
+		public async Task<double> GetTotalRevenueInLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd)
+		{
+			var totalLastMonthRevenue = await _dbAppContext.App_Orders
+										.Where(o => o.CreatedDate >= lastMonthStart && o.CreatedDate <= lastMonthEnd)
+										.SumAsync(o => o.Amount ?? 0);
+			return totalLastMonthRevenue;
+		}
+
+		public async Task<int> GetTotalOrderWithStatusInCurrentMonth(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter)
+		{
+			var totalOrdersCurrentMonth = await _dbAppContext.App_Orders
+		.Where(o => o.CreatedDate >= currentMonthStart
+					&& o.CreatedDate < currentMonthStart.AddMonths(1)
+					&& o.Status == (int)orderStatusFilter)
+		.CountAsync();
+			return (int)totalOrdersCurrentMonth;
+		}
+		public async Task<int> GetTotalOrderWithStatusIntLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd, OrderStatusFilter orderStatusFilter)
+		{
+			var totalOrdersLastMonth = await _dbAppContext.App_Orders
+		.Where(o => o.CreatedDate >= lastMonthStart
+					&& o.CreatedDate <= lastMonthEnd
+					&& o.Status == (int)orderStatusFilter)
+		.CountAsync();
+			return (int)totalOrdersLastMonth;
 		}
 
 		#endregion

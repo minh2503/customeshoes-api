@@ -4,6 +4,7 @@ using App.DAL.Interfaces;
 using App.Entity;
 using App.Entity.DTO;
 using App.Entity.Models;
+using App.Entity.Models.AdminModel;
 using App.Entity.Models.OpenPlatform;
 using App.Entity.Models.Orders;
 using System;
@@ -212,6 +213,56 @@ namespace App.BLL.Implements
 		}
 		#endregion
 
+		#region Admin
+
+		public async Task<SummaryDataModel> SummaryDataInMonth()
+		{
+			var currentMonthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+			var lastMonthStart = currentMonthStart.AddMonths(-1);
+			var lastMonthEnd = currentMonthStart.AddDays(-1);
+
+			//<====Order Start====>
+			var totalOrderInCurrentMonth = await _checkOutRepository.GetTotalOrderInCurrentMonth(currentMonthStart);
+			var totalOrderInLastMonth = await _checkOutRepository.GetTotalOrderInLastMonth(lastMonthStart, lastMonthEnd);
+			var orderCompareWithPreviousMonth = GetPercentageChangeMessage(totalOrderInCurrentMonth, totalOrderInLastMonth);
+			//<=====Order End====>
+
+
+			//<=====Revenue Start====>
+			var totalRevenueInCurrentMonth = await _checkOutRepository.GetTotalRevenueInCurrentMonth(currentMonthStart);
+			var totalRevenueInLastMonth = await _checkOutRepository.GetTotalRevenueInLastMonth(lastMonthStart, lastMonthEnd);
+			var revenueCompareWithPreviousMonth = GetPercentageChangeMessage(totalOrderInCurrentMonth, totalOrderInLastMonth);
+			//<=====Revenue End====>
+
+
+			//<=====Confirmed Order Start====>
+			var totalConfirmedOrderInCurrentMonth = await _checkOutRepository.GetTotalOrderWithStatusInCurrentMonth(currentMonthStart, OrderStatusFilter.Confirmed);
+			var totalConfirmedOrderInLastMonth =  await _checkOutRepository.GetTotalOrderWithStatusIntLastMonth(lastMonthStart, lastMonthEnd, OrderStatusFilter.Confirmed);
+			var confirmedOrderCompareToPreviousMonth = GetPercentageChangeMessage(totalConfirmedOrderInCurrentMonth, totalConfirmedOrderInLastMonth);
+			//<=====Confirmed Order End====>
+
+
+			//<=====Delivered Order Start====>
+			var totalDeliveredOrderInCurrentMonth = await _checkOutRepository.GetTotalOrderWithStatusInCurrentMonth(currentMonthStart, OrderStatusFilter.Delivered);
+			var totalDeliveredOrderInLastMonth = await _checkOutRepository.GetTotalOrderWithStatusIntLastMonth(lastMonthStart, lastMonthEnd, OrderStatusFilter.Delivered);
+			var deliverdOrderCompareToPreviousMonth = GetPercentageChangeMessage(totalDeliveredOrderInCurrentMonth, totalDeliveredOrderInLastMonth);
+			//<=====Delivered Order End====>
+
+			return new SummaryDataModel
+			{
+				SummaryOrdersInMonth = totalOrderInCurrentMonth,
+				OrderCompareWithPreviousMonth = orderCompareWithPreviousMonth,
+				SummaryRevenueInMonth = totalRevenueInCurrentMonth,
+				RevenueCompareWithPreviousMonth = revenueCompareWithPreviousMonth,
+				SummaryConfirmedOrderInMonth = totalConfirmedOrderInCurrentMonth,
+				ConfirmedOrderCompareWithPreviousMonth = confirmedOrderCompareToPreviousMonth,
+				SummaryProccessedOrderInMonth = totalDeliveredOrderInCurrentMonth,
+				ProccessedCompareWithPreviousMonth = deliverdOrderCompareToPreviousMonth
+			};
+		}
+
+		#endregion
+
 		#region Private
 		private async Task<string> GenerateIncrementalOrderIdAsync()
 		{
@@ -286,6 +337,27 @@ namespace App.BLL.Implements
 			orderDetailModel.UserName = user.UserName;
 			orderDetailModel.orderItemDetailModels = await GetOrderItemsDetails(dto.Id);
 			return orderDetailModel;
+		}
+
+		private string GetPercentageChangeMessage(int currentMonthValue, int lastMonthValue)
+		{
+			if (lastMonthValue == 0)
+			{
+				return "+100% so với tháng trước.";
+			}
+
+			var percentageChange = Math.Round(((double)(currentMonthValue - lastMonthValue) / lastMonthValue) * 100, 2);
+
+			if (percentageChange > 0)
+			{
+				return $"+{percentageChange}% so với tháng trước.";
+			}
+			else if (percentageChange < 0)
+			{
+				return $"{percentageChange}% so với tháng trước."; 
+			}
+
+			return "Không có sự thay đổi so với tháng trước.";
 		}
 		#endregion
 	}

@@ -308,10 +308,29 @@ namespace tapluyen.api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("UpdateOrder: {0} {1}", ex.Message, ex.StackTrace);
+                _logger.LogError("UpdateOrderItem: {0} {1}", ex.Message, ex.StackTrace);
                 return SaveError(ex.Message);
             }
         }
 
-    }
+		[Authorize]
+		[HttpGet]
+		[Route("summary-data-in-month")]
+		public async Task<IActionResult> SummaryDataInMonth()
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.SummaryDataInMonth();
+				if (data == null) return GetError();
+				return GetSuccess(data);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("SummaryDataInMonth: {0} {1}", ex.Message, ex.StackTrace);
+				return GetError(ex.Message);
+			}
+		}
+
+
+	}
 }
