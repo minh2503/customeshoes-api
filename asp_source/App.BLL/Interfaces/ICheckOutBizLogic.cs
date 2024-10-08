@@ -30,6 +30,7 @@ namespace App.BLL.Interfaces
 		#region Admin
 		Task<SummaryDataModel> SummaryDataInMonth();
 		Task<List<TopSellingShoesModel>> GetTop3SellingShoesInMonth();
+		Task<List<MonthlyRevenueModel>> GetMonthlyRevenue();
 		#endregion
 
 		#region OrderItem

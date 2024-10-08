@@ -349,6 +349,22 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
-
+		[Authorize]
+		[HttpGet]
+		[Route("get-monthly-revenue")]
+		public async Task<IActionResult> GetMonthlyRevenue()
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.GetMonthlyRevenue();
+				if (data == null) return GetError();
+				return GetSuccess(data);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetMonthlyRevenue: {0} {1}", ex.Message, ex.StackTrace);
+				return GetError(ex.Message);
+			}
+		}
 	}
 }

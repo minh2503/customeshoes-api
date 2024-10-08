@@ -38,6 +38,7 @@ namespace App.DAL.Interfaces
 		Task<int> GetTotalOrderWithStatusInCurrentMonth(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter);
 		Task<int> GetTotalOrderWithStatusIntLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd, OrderStatusFilter orderStatusFilter);
 		Task<List<TopSellingShoesDTO>> GetTop3SellingShoesInMonthWithStatus(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter);
+		Task<List<MonthlyRevenueDTO>> GetMonthlyRevenueWithOrderStatus(OrderStatusFilter orderStatusFilter);
 		#endregion
 
 		#region OrderItem

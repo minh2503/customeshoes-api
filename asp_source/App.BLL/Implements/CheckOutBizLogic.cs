@@ -285,6 +285,18 @@ namespace App.BLL.Implements
 			return responseModel;
         }
 
+		public async Task<List<MonthlyRevenueModel>> GetMonthlyRevenue()
+		{
+			var data = await _checkOutRepository.GetMonthlyRevenueWithOrderStatus(OrderStatusFilter.Delivered);
+			var repsonse = new List<MonthlyRevenueModel>();
+            foreach (var item in data)
+            {
+				var model = new MonthlyRevenueModel(item);
+				repsonse.Add(model);
+            }
+			return repsonse;
+        }
+
 		#endregion
 
 		#region Private

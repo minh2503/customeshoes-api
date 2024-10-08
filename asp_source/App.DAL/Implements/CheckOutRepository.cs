@@ -328,6 +328,25 @@ namespace App.DAL.Implements
 			return topShoes;
 		}
 
+
+		public async Task<List<MonthlyRevenueDTO>> GetMonthlyRevenueWithOrderStatus(OrderStatusFilter orderStatusFilter)
+		{
+			var monthlyRevenue = await (from order in _dbAppContext.App_Orders
+										where order.Amount.HasValue
+										group order by new { order.CreatedDate.Year, order.CreatedDate.Month } into g
+										select new MonthlyRevenueDTO
+										{
+											Year = g.Key.Year,
+											Month = g.Key.Month,
+											TotalRevenue = g.Sum(o => o.Amount ?? 0)
+										})
+								.OrderByDescending(r => r.Year)
+								.ThenByDescending(r => r.Month)
+								.ToListAsync();
+
+			return monthlyRevenue;
+		}
+
 		#endregion
 
 		#region OrderItem

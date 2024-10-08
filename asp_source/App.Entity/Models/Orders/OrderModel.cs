@@ -31,7 +31,7 @@ namespace App.Entity.Models.Orders
         public DateTime? PaymentDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public string? OrderCode { get; set; }
 
