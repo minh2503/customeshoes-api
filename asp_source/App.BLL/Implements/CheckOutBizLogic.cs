@@ -7,6 +7,8 @@ using App.Entity.Models;
 using App.Entity.Models.AdminModel;
 using App.Entity.Models.OpenPlatform;
 using App.Entity.Models.Orders;
+using App.Entity.Models.Shoes;
+using App.Entity.Models.ShoesImages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -260,6 +262,28 @@ namespace App.BLL.Implements
 				ProccessedCompareWithPreviousMonth = deliverdOrderCompareToPreviousMonth
 			};
 		}
+
+		public async Task<List<TopSellingShoesModel>> GetTop3SellingShoesInMonth()
+		{
+			var currentMonthStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+			var responseDTO = await _checkOutRepository.GetTop3SellingShoesInMonthWithStatus(currentMonthStart, OrderStatusFilter.Delivered);
+			List<TopSellingShoesModel> responseModel = new List<TopSellingShoesModel>();
+            foreach (var item in responseDTO)
+            {
+				var shoesDTO = await _shoesRepository.GetShoes(item.ShoesId);
+				var shoesViewModel = new ShoesViewModel(shoesDTO);
+				var shoesImagesDTO = await _shoesImagesRepository.GetListShoesImagesByShoes(shoesDTO.Id);
+                foreach (var image in shoesImagesDTO)
+                {
+					var shoesImageViewModel = new ShoesImagesViewModel(image);
+					shoesViewModel.shoesImagesViewModels.Add(shoesImageViewModel);
+                }
+                var childResponseModel = new TopSellingShoesModel(item);
+				childResponseModel.ShoesViewModel = shoesViewModel;
+				responseModel.Add(childResponseModel);
+            }
+			return responseModel;
+        }
 
 		#endregion
 

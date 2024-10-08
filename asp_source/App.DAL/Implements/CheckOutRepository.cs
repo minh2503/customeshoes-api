@@ -296,6 +296,7 @@ namespace App.DAL.Implements
 		.CountAsync();
 			return (int)totalOrdersCurrentMonth;
 		}
+
 		public async Task<int> GetTotalOrderWithStatusIntLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd, OrderStatusFilter orderStatusFilter)
 		{
 			var totalOrdersLastMonth = await _dbAppContext.App_Orders
@@ -304,6 +305,27 @@ namespace App.DAL.Implements
 					&& o.Status == (int)orderStatusFilter)
 		.CountAsync();
 			return (int)totalOrdersLastMonth;
+		}
+
+
+		public async Task<List<TopSellingShoesDTO>> GetTop3SellingShoesInMonthWithStatus(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter)
+		{
+			var topShoes = await (from orderItem in _dbAppContext.App_OrderItems
+								  join order in _dbAppContext.App_Orders on orderItem.OrderId equals order.Id
+								  where order.CreatedDate >= currentMonthStart && order.CreatedDate < currentMonthStart.AddMonths(1)
+										&& order.Status == (int)orderStatusFilter
+								  group orderItem by orderItem.ShoesId into g
+								  select new TopSellingShoesDTO
+								  {
+									  ShoesId = g.Key,
+									  QuantitySold = g.Sum(oi => oi.Quantity), 
+									  TotalRevenue = g.Sum(oi => oi.UnitPrice) 
+								  })
+						  .OrderByDescending(s => s.QuantitySold) 
+						  .Take(3)
+						  .ToListAsync();
+
+			return topShoes;
 		}
 
 		#endregion

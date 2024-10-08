@@ -331,6 +331,24 @@ namespace tapluyen.api.Controllers
 			}
 		}
 
+		[Authorize]
+		[HttpGet]
+		[Route("get-top-3-shoes-in-month")]
+		public async Task<IActionResult> GetTop3SellingShoesInMonth()
+		{
+			try
+			{
+				var data = await _checkOutBizLogic.GetTop3SellingShoesInMonth();
+				if (data == null) return GetError();
+				return GetSuccess(data);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("GetTop3SellingShoesInMonth: {0} {1}", ex.Message, ex.StackTrace);
+				return GetError(ex.Message);
+			}
+		}
+
 
 	}
 }
