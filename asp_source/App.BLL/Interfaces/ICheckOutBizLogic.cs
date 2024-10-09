@@ -1,6 +1,7 @@
 ﻿using App.Entity;
 using App.Entity.DTO;
 using App.Entity.Models;
+using App.Entity.Models.AdminModel;
 using App.Entity.Models.Orders;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,12 @@ namespace App.BLL.Interfaces
 		Task<OrderDetailModel> GetOrderById(long id);
 		Task<OrderDetailModel> GetOrderByCode(string orderCode);
 		Task<List<OrderDetailModel>> GetAllOrdersByUserId(PagingModel paging, long userId);
+		#endregion
+
+		#region Admin
+		Task<SummaryDataModel> SummaryDataInMonth();
+		Task<List<TopSellingShoesModel>> GetTop3SellingShoesInMonth();
+		Task<List<MonthlyRevenueModel>> GetMonthlyRevenue();
 		#endregion
 
 		#region OrderItem

@@ -1,5 +1,6 @@
 ﻿using App.Entity;
 using App.Entity.DTO;
+using App.Entity.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,21 @@ namespace App.DAL.Interfaces
 		Task<List<App_OrderDTO>> GetAllOrdersByKey(PagingModel paging);
 		Task<App_OrderDTO> GetOrderByCode(string orderCode);
 		Task<List<App_OrderDTO>> GetAllOrdersByUserId(PagingModel paging, long userId);
+		#endregion
+
+		#region Admin
+		Task<List<App_OrderDTO>> GetAllOrdersWithStatusNoPaging(OrderStatusFilter orderStatusFilter);
+		Task<int> GetTotalOrderInMonth();
+		Task<int> GetTotalPendingOrder();
+		Task<int> GetTotalProcceedOrder();
+		Task<int> GetTotalOrderInCurrentMonth(DateTime currentMonthStart);
+		Task<int> GetTotalOrderInLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd);
+		Task<double> GetTotalRevenueInCurrentMonth(DateTime currentMonthStart);
+		Task<double> GetTotalRevenueInLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd);
+		Task<int> GetTotalOrderWithStatusInCurrentMonth(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter);
+		Task<int> GetTotalOrderWithStatusIntLastMonth(DateTime lastMonthStart, DateTime lastMonthEnd, OrderStatusFilter orderStatusFilter);
+		Task<List<TopSellingShoesDTO>> GetTop3SellingShoesInMonthWithStatus(DateTime currentMonthStart, OrderStatusFilter orderStatusFilter);
+		Task<List<MonthlyRevenueDTO>> GetMonthlyRevenueWithOrderStatus(OrderStatusFilter orderStatusFilter);
 		#endregion
 
 		#region OrderItem
