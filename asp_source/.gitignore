@@ -21,7 +21,6 @@
 /Database/TFU_Gym/TFU_Gym.dbmdl
 /App.Utility/LazopSdk/obj/Debug/netcoreapp2.1
 /App.Utility/LazopSdk/obj/Release/netcoreapp2.1
-/wwwroot/images/
 /App.BLL/bin/Release/net6.0
 /App.DAL/bin/Release/net6.0
 /App.Entity/bin/Release/net6.0
