@@ -1,4 +1,5 @@
-﻿using App.BLL.Implements;
+﻿using App.API.Filters;
+using App.BLL.Implements;
 using App.BLL.Interfaces;
 using App.Entity.Models;
 using App.Entity.Models.Brands;
@@ -26,7 +27,7 @@ namespace tapluyen.api.Controllers
 			this._identityBizLogic = identityBizLogic;
 		}
 
-		[Authorize]
+		[TFUAuthorize(Roles = "Admin")]
 		[HttpPost("create-update-brands")]
 		public async Task<IActionResult> CreateUpdateBrands([FromBody] BrandRequestModel model)
 		{
